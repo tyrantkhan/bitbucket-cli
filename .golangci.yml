@@ -1,11 +1,14 @@
 version: "2"
 
+formatters:
+  enable:
+    - gofmt
+
 linters:
   default: none
   enable:
     - govet
     - gocritic
-    - gofmt
     - unused
     - ineffassign
     - bodyclose
