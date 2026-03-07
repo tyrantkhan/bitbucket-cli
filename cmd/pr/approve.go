@@ -46,7 +46,7 @@ func newCmdApprove() *cli.Command {
 			if err != nil {
 				return err
 			}
-			resp.Body.Close()
+			_ = resp.Body.Close()
 
 			fmt.Fprintln(f.IOOut, output.Success.Render(
 				fmt.Sprintf("Pull request #%d approved.", prID),

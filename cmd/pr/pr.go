@@ -17,6 +17,7 @@ func NewCmdPR() *cli.Command {
 			newCmdComment(),
 			newCmdDiff(),
 			newCmdActivity(),
+			newCmdStatus(),
 		},
 	}
 }

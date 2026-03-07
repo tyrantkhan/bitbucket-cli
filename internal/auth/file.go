@@ -32,8 +32,14 @@ func (f *FileStore) GetCredentials() (*Credentials, error) {
 		return nil, err
 	}
 
-	if creds.Username == "" || creds.AppPassword == "" {
-		return nil, errors.New("invalid credentials. Run 'bb auth login' to re-authenticate")
+	if creds.IsOAuth() {
+		if creds.AccessToken == "" {
+			return nil, errors.New("invalid OAuth credentials. Run 'bb auth login' to re-authenticate")
+		}
+	} else {
+		if creds.Username == "" || creds.APIToken == "" {
+			return nil, errors.New("invalid credentials. Run 'bb auth login' to re-authenticate")
+		}
 	}
 
 	return &creds, nil

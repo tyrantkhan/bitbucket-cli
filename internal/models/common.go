@@ -60,9 +60,9 @@ type Clone struct {
 // Participant represents a PR participant.
 type Participant struct {
 	User     User   `json:"user"`
-	Role     string `json:"role"`     // "REVIEWER", "PARTICIPANT"
+	Role     string `json:"role"` // "REVIEWER", "PARTICIPANT"
 	Approved bool   `json:"approved"`
-	State    string `json:"state"`    // "approved", "changes_requested", etc.
+	State    string `json:"state"` // "approved", "changes_requested", etc.
 }
 
 // FormatTime formats a Bitbucket timestamp for display.

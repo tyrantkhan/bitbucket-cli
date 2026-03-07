@@ -14,7 +14,7 @@ func newCmdLogout() *cli.Command {
 	return &cli.Command{
 		Name:  "logout",
 		Usage: "Remove stored authentication credentials",
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
 			var confirmed bool
@@ -38,6 +38,6 @@ func newCmdLogout() *cli.Command {
 
 			fmt.Fprintln(f.IOOut, output.Success.Render("Logged out successfully."))
 			return nil
-		},
+		}),
 	}
 }

@@ -31,9 +31,9 @@ type PipelineStateValue struct {
 
 // PipelineTarget represents what triggered the pipeline.
 type PipelineTarget struct {
-	Type     string  `json:"type"` // pipeline_ref_target, pipeline_custom_target
-	RefType  string  `json:"ref_type"`
-	RefName  string  `json:"ref_name"`
+	Type     string `json:"type"` // pipeline_ref_target, pipeline_custom_target
+	RefType  string `json:"ref_type"`
+	RefName  string `json:"ref_name"`
 	Selector *struct {
 		Type    string `json:"type"`
 		Pattern string `json:"pattern"`

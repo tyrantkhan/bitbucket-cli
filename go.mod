@@ -1,6 +1,6 @@
 module github.com/tyrantkhan/bb
 
-go 1.25.6
+go 1.26.1
 
 require (
 	charm.land/glamour/v2 v2.0.0-20260302162937-86f90cfe96d1

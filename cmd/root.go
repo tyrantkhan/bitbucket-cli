@@ -54,7 +54,7 @@ func versionString() string {
 	if BuildDate != "" {
 		s += fmt.Sprintf(" (%s)", BuildDate)
 	}
-	if Version != "dev" && !strings.HasSuffix(Version, "-dev") {
+	if Version != "dev" && !strings.HasSuffix(Version, "-dev") && strings.Contains(Version, ".") {
 		s += fmt.Sprintf("\nhttps://github.com/tyrantkhan/bb/releases/tag/v%s", Version)
 	}
 	return s
@@ -66,10 +66,11 @@ func NewRootCommand() *cli.Command {
 		fmt.Println(versionString())
 	}
 
-	return &cli.Command{
-		Name:    "bb",
-		Usage:   "Bitbucket Cloud CLI",
-		Version: Version,
+	root := &cli.Command{
+		Name:                  "bb",
+		Usage:                 "Bitbucket Cloud CLI",
+		Version:               Version,
+		EnableShellCompletion: true,
 		Before: func(ctx context.Context, cmd *cli.Command) (context.Context, error) {
 			f, err := cmdutil.NewFactory()
 			if err != nil {
@@ -83,6 +84,24 @@ func NewRootCommand() *cli.Command {
 			repoCmd.NewCmdRepo(),
 			prCmd.NewCmdPR(),
 			pipelineCmd.NewCmdPipeline(),
+			{
+				Name:    "version",
+				Aliases: []string{"v"},
+				Usage:   "Print the version",
+				Hidden:  true,
+				Action: func(ctx context.Context, cmd *cli.Command) error {
+					fmt.Println(versionString())
+					return nil
+				},
+			},
 		},
 	}
+
+	root.Commands = append(root.Commands, newHelpTopicCommands(root)...)
+
+	root.CustomRootCommandHelpTemplate = cli.RootCommandHelpTemplate +
+		`HELP TOPICS:
+` + helpTopicsSection() + "\n"
+
+	return root
 }

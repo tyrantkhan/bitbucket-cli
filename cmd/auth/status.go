@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
-	"strings"
+	"time"
 
 	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
@@ -16,7 +16,7 @@ func newCmdStatus() *cli.Command {
 	return &cli.Command{
 		Name:  "status",
 		Usage: "Show authentication status",
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
 			client, err := f.APIClient()
@@ -46,7 +46,21 @@ func newCmdStatus() *cli.Command {
 			fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Nickname:"), user.Nickname)
 
 			if creds != nil {
-				fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("App Password:"), maskPassword(creds.AppPassword))
+				if creds.IsOAuth() {
+					fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Auth method:"), "OAuth")
+					fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Access Token:"), maskSecret(creds.AccessToken))
+					if creds.ExpiresAt > 0 {
+						expiresAt := time.Unix(creds.ExpiresAt, 0)
+						if time.Now().Before(expiresAt) {
+							fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Token expires:"), expiresAt.Local().Format("2006-01-02 15:04"))
+						} else {
+							fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Token expires:"), output.Warning.Render("expired (will auto-refresh)"))
+						}
+					}
+				} else {
+					fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("Auth method:"), "API token")
+					fmt.Fprintf(f.IOOut, "  %s  %s\n", output.Muted.Render("API Token:"), maskSecret(creds.APIToken))
+				}
 			}
 
 			workspace := f.Config.DefaultWorkspace
@@ -60,14 +74,14 @@ func newCmdStatus() *cli.Command {
 			fmt.Fprintln(f.IOOut, output.Success.Render("Authenticated"))
 
 			return nil
-		},
+		}),
 	}
 }
 
-// maskPassword masks all but the last 4 characters of a password.
-func maskPassword(password string) string {
-	if len(password) <= 4 {
-		return strings.Repeat("*", len(password))
+// maskSecret masks a secret, showing only the last 4 characters.
+func maskSecret(s string) string {
+	if len(s) <= 4 {
+		return "****"
 	}
-	return strings.Repeat("*", len(password)-4) + password[len(password)-4:]
+	return "****" + s[len(s)-4:]
 }
