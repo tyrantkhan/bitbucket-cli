@@ -1,6 +1,45 @@
+commit-msg:
+  commands:
+    validate:
+      run: |
+        msg=$(head -1 "$1")
+        if ! echo "$msg" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?(!)?: .+'; then
+          echo "ERROR: Commit message does not follow Conventional Commits format."
+          echo ""
+          echo "  Valid prefixes: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+          echo "  Format: <type>[optional scope][!]: <description>"
+          echo "  Examples:"
+          echo "    feat: add OAuth support"
+          echo "    fix(auth): handle expired tokens"
+          echo "    docs: update README"
+          exit 1
+        fi
+
 pre-commit:
   parallel: true
   commands:
+    branch-name:
+      run: |
+        branch=$(git branch --show-current)
+        if [ -z "$branch" ]; then
+          exit 0
+        fi
+        if echo "$branch" | grep -qE '^(main|master|develop)$'; then
+          exit 0
+        fi
+        if ! echo "$branch" | grep -qE '^(main|master|develop|feature|fix|hotfix|chore|docs|refactor|test|ci|release)/[a-z0-9._-]+$'; then
+          echo "ERROR: Branch name '$branch' does not follow naming convention."
+          echo ""
+          echo "  Allowed standalone: main, master, develop"
+          echo "  Format: <type>/<name>"
+          echo "  Types: feature, fix, hotfix, chore, docs, refactor, test, ci, release"
+          echo "  Name must be lowercase alphanumeric with dots, hyphens, or underscores."
+          echo "  Examples:"
+          echo "    feature/1-add-oauth"
+          echo "    fix/login-bug"
+          echo "    chore/update-deps"
+          exit 1
+        fi
     lint:
       glob: "*.go"
       run: golangci-lint run --fix
