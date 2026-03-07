@@ -15,7 +15,6 @@ linters:
     - nilerr
     - errcheck
     - staticcheck
-    - gosimple
 
   exclusions:
     rules:

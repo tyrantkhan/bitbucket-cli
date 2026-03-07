@@ -2,7 +2,7 @@ commit-msg:
   commands:
     validate:
       run: |
-        msg=$(head -1 "$1")
+        msg=$(head -1 {1})
         if ! echo "$msg" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?(!)?: .+'; then
           echo "ERROR: Commit message does not follow Conventional Commits format."
           echo ""
@@ -42,15 +42,15 @@ pre-commit:
         fi
     lint:
       glob: "*.go"
-      run: golangci-lint run --fix
+      run: mise exec -- golangci-lint run --fix
       stage_fixed: true
     tidy:
-      run: go mod tidy && git diff --exit-code go.mod go.sum
+      run: mise exec -- go mod tidy && git diff --exit-code go.mod go.sum
 
 pre-push:
   parallel: true
   commands:
     test:
-      run: go test ./...
+      run: mise exec -- go test ./...
     build:
-      run: go build .
+      run: mise exec -- go build .
