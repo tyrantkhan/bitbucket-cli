@@ -1,0 +1,17 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.go"
+      run: golangci-lint run --fix
+      stage_fixed: true
+    tidy:
+      run: go mod tidy && git diff --exit-code go.mod go.sum
+
+pre-push:
+  parallel: true
+  commands:
+    test:
+      run: go test ./...
+    build:
+      run: go build .

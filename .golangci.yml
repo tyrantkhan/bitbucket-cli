@@ -1,0 +1,22 @@
+version: "2"
+
+linters:
+  default: none
+  enable:
+    - govet
+    - gocritic
+    - gofmt
+    - unused
+    - ineffassign
+    - bodyclose
+    - nilerr
+    - errcheck
+    - staticcheck
+    - gosimple
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - bodyclose
+        - errcheck

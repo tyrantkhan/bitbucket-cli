@@ -1,0 +1,19 @@
+# Binary
+bb
+bb.exe
+
+# Go
+*.test
+*.out
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dist
+dist/

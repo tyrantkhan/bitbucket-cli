@@ -1,0 +1,47 @@
+version: 2
+
+project_name: bb
+
+builds:
+  - main: .
+    binary: bb
+    ldflags:
+      - -s -w
+      - -X github.com/tyrantkhan/bb/cmd.Version={{.Version}}
+      - -X github.com/tyrantkhan/bb/cmd.BuildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  disable: true
+
+brews:
+  - name: bb
+    repository:
+      owner: tyrantkhan
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    homepage: "https://github.com/tyrantkhan/bb"
+    description: "Bitbucket Cloud CLI"
+    license: "MIT"
+    install: |
+      bin.install "bb"
+    test: |
+      system "#{bin}/bb", "--version"
