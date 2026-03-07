@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.2...v0.0.3) (2026-03-07)
+
+
+### Bug Fixes
+
+* migrate homebrew tap from broken formula to cask ([e8197b0](https://github.com/tyrantkhan/bitbucket-cli/commit/e8197b0b939490078966b029033f7072d30d1408))
+
 ## [0.0.2](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.1...v0.0.2) (2026-03-07)
 
 
