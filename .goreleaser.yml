@@ -32,16 +32,17 @@ checksum:
 changelog:
   disable: true
 
-brews:
+homebrew_casks:
   - name: bb
+    binaries:
+      - bb
+    directory: Casks
     repository:
       owner: tyrantkhan
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    url:
+      template: "https://github.com/tyrantkhan/bitbucket-cli/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+      verified: "github.com/tyrantkhan/bitbucket-cli/"
     homepage: "https://github.com/tyrantkhan/bitbucket-cli"
     description: "Bitbucket Cloud CLI"
-    license: "MIT"
-    install: |
-      bin.install "bb"
-    test: |
-      system "#{bin}/bb", "--version"
