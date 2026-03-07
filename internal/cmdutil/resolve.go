@@ -40,10 +40,12 @@ func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, str
 	if err := api.ValidateSlug("workspace", workspace); err != nil {
 		return "", "", err
 	}
-	if repo != "" {
-		if err := api.ValidateSlug("repo", repo); err != nil {
-			return "", "", err
-		}
+	if repo == "" {
+		return "", "", fmt.Errorf("repository is required. Use --repo flag, or run from a Bitbucket repo")
+	}
+
+	if err := api.ValidateSlug("repo", repo); err != nil {
+		return "", "", err
 	}
 
 	return workspace, repo, nil

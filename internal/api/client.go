@@ -29,18 +29,29 @@ func ValidateSlug(name, value string) error {
 
 // Client is the Bitbucket API client.
 type Client struct {
-	http     *http.Client
-	username string
-	password string
+	http        *http.Client
+	username    string
+	password    string
+	authMethod  string
+	bearerToken string
 }
 
 // NewClient creates a new API client with the given credentials.
 func NewClient(creds *auth.Credentials) *Client {
-	return &Client{
-		http:     &http.Client{},
-		username: creds.Username,
-		password: creds.AppPassword,
+	c := &Client{
+		http: &http.Client{},
 	}
+
+	if creds.IsOAuth() {
+		c.authMethod = "oauth"
+		c.bearerToken = creds.AccessToken
+	} else {
+		c.authMethod = "api_token"
+		c.username = creds.Username
+		c.password = creds.APIToken
+	}
+
+	return c
 }
 
 // Get performs a GET request to the given API path.
@@ -99,7 +110,11 @@ func (c *Client) do(method, path string, body interface{}) (*http.Response, erro
 }
 
 func (c *Client) setHeaders(req *http.Request) {
-	req.SetBasicAuth(c.username, c.password)
+	if c.authMethod == "oauth" {
+		req.Header.Set("Authorization", "Bearer "+c.bearerToken)
+	} else {
+		req.SetBasicAuth(c.username, c.password)
+	}
 	req.Header.Set("User-Agent", userAgent)
 	req.Header.Set("Accept", "application/json")
 }
