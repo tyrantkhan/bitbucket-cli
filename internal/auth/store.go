@@ -2,7 +2,7 @@ package auth
 
 // Credentials holds the authentication credentials.
 type Credentials struct {
-	Username    string `json:"username"`
+	Username string `json:"username"`
 	APIToken string `json:"api_token,omitempty"`
 
 	// OAuth fields

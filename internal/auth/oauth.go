@@ -121,14 +121,14 @@ func tokenRequest(clientID, clientSecret string, data url.Values) (*TokenRespons
 	if err != nil {
 		return nil, fmt.Errorf("token request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		var errResp struct {
 			Error       string `json:"error"`
 			Description string `json:"error_description"`
 		}
-		json.NewDecoder(resp.Body).Decode(&errResp)
+		_ = json.NewDecoder(resp.Body).Decode(&errResp)
 		msg := errResp.Description
 		if msg == "" {
 			msg = errResp.Error

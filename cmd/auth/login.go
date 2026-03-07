@@ -73,7 +73,6 @@ func newCmdLogin() *cli.Command {
 				}
 
 				useWeb = method == "web"
-				useAPIToken = method == "api_token"
 			}
 
 			var creds *auth.Credentials

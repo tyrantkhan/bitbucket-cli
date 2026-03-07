@@ -7,7 +7,7 @@ import "encoding/json"
 func Paginate[T any](client *Client, path string, limit int) ([]T, error) {
 	var all []T
 
-	resp, err := client.Get(path)
+	resp, err := client.Get(path) //nolint:bodyclose // closed by DecodeJSON
 	if err != nil {
 		return nil, err
 	}
@@ -19,7 +19,7 @@ func Paginate[T any](client *Client, path string, limit int) ([]T, error) {
 	all = append(all, page.Values...)
 
 	for page.Next != "" && (limit <= 0 || len(all) < limit) {
-		resp, err := client.GetURL(page.Next)
+		resp, err := client.GetURL(page.Next) //nolint:bodyclose // closed by DecodeJSON
 		if err != nil {
 			return nil, err
 		}

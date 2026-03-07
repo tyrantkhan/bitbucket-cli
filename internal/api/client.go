@@ -126,7 +126,7 @@ func (c *Client) doRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	if resp.StatusCode >= 400 {
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 		return nil, parseErrorResponse(resp)
 	}
 
@@ -135,6 +135,6 @@ func (c *Client) doRequest(req *http.Request) (*http.Response, error) {
 
 // DecodeJSON reads a JSON response body into the target struct.
 func DecodeJSON(resp *http.Response, target interface{}) error {
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 	return json.NewDecoder(resp.Body).Decode(target)
 }

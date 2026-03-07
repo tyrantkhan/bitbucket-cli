@@ -52,7 +52,7 @@ func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, str
 
 	if workspace == "" {
 		if !HasExplicitInput(cmd) {
-			cli.ShowSubcommandHelp(cmd)
+			_ = cli.ShowSubcommandHelp(cmd)
 			return "", "", ErrShowedUsage
 		}
 		return "", "", fmt.Errorf("workspace is required. Use --workspace flag, or run from a Bitbucket repo")
@@ -63,7 +63,7 @@ func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, str
 	}
 	if repo == "" {
 		if !HasExplicitInput(cmd) {
-			cli.ShowSubcommandHelp(cmd)
+			_ = cli.ShowSubcommandHelp(cmd)
 			return "", "", ErrShowedUsage
 		}
 		return "", "", fmt.Errorf("repository is required. Use --repo flag, or run from a Bitbucket repo")
@@ -94,7 +94,7 @@ func ResolveWorkspace(ctx context.Context, cmd *cli.Command) (string, error) {
 
 	if workspace == "" {
 		if !HasExplicitInput(cmd) {
-			cli.ShowSubcommandHelp(cmd)
+			_ = cli.ShowSubcommandHelp(cmd)
 			return "", ErrShowedUsage
 		}
 		return "", fmt.Errorf("workspace is required. Use --workspace flag, or run from a Bitbucket repo")

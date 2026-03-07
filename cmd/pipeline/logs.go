@@ -92,7 +92,7 @@ func newCmdLogs() *cli.Command {
 				if err != nil {
 					return err
 				}
-				defer resp.Body.Close()
+				defer func() { _ = resp.Body.Close() }()
 
 				body, err := io.ReadAll(resp.Body)
 				if err != nil {
@@ -113,7 +113,7 @@ func newCmdLogs() *cli.Command {
 				}
 
 				body, err := io.ReadAll(resp.Body)
-				resp.Body.Close()
+				_ = resp.Body.Close()
 				if err != nil {
 					return fmt.Errorf("failed to read log: %w", err)
 				}
@@ -144,7 +144,7 @@ func newCmdLogs() *cli.Command {
 					}
 
 					body, err := io.ReadAll(resp.Body)
-					resp.Body.Close()
+					_ = resp.Body.Close()
 					if err != nil {
 						return fmt.Errorf("failed to read log: %w", err)
 					}
