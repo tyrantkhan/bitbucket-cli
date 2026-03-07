@@ -21,7 +21,7 @@ func newCmdList() *cli.Command {
 			cmdutil.FormatFlag,
 			cmdutil.LimitFlag,
 		},
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 			client, err := f.APIClient()
 			if err != nil {
@@ -59,6 +59,6 @@ func newCmdList() *cli.Command {
 			}
 
 			return output.Format(format, pipelines, headers, rows)
-		},
+		}),
 	}
 }

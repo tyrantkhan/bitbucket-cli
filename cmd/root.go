@@ -66,11 +66,11 @@ func NewRootCommand() *cli.Command {
 		fmt.Println(versionString())
 	}
 
-	return &cli.Command{
-		Name:                   "bb",
-		Usage:                  "Bitbucket Cloud CLI",
-		Version:                Version,
-		EnableShellCompletion:  true,
+	root := &cli.Command{
+		Name:                  "bb",
+		Usage:                 "Bitbucket Cloud CLI",
+		Version:               Version,
+		EnableShellCompletion: true,
 		Before: func(ctx context.Context, cmd *cli.Command) (context.Context, error) {
 			f, err := cmdutil.NewFactory()
 			if err != nil {
@@ -96,4 +96,12 @@ func NewRootCommand() *cli.Command {
 			},
 		},
 	}
+
+	root.Commands = append(root.Commands, newHelpTopicCommands(root)...)
+
+	root.CustomRootCommandHelpTemplate = cli.RootCommandHelpTemplate +
+		`HELP TOPICS:
+` + helpTopicsSection() + "\n"
+
+	return root
 }

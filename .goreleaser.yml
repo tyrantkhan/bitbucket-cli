@@ -38,7 +38,7 @@ brews:
       owner: tyrantkhan
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
-    homepage: "https://github.com/tyrantkhan/bb"
+    homepage: "https://github.com/tyrantkhan/bitbucket-cli"
     description: "Bitbucket Cloud CLI"
     license: "MIT"
     install: |

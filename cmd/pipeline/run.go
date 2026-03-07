@@ -34,7 +34,7 @@ func newCmdRun() *cli.Command {
 				Usage: "Pipeline variable as KEY=VALUE (repeatable)",
 			},
 		},
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 			client, err := f.APIClient()
 			if err != nil {
@@ -137,6 +137,6 @@ func newCmdRun() *cli.Command {
 			fmt.Fprintf(f.IOOut, "%s %s\n", output.Bold.Render("Status:"), output.StatusColor(status).Render(status))
 
 			return nil
-		},
+		}),
 	}
 }

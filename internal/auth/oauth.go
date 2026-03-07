@@ -9,12 +9,14 @@ import (
 	"strings"
 )
 
-// Default OAuth consumer credentials. These are embedded in the CLI binary
-// and are safe for public clients (same pattern as GitHub CLI).
+// Default OAuth consumer credentials embedded in the CLI binary.
+// These are not secret — they identify the app, not the user.
+// The security is in the user's browser-based authorization flow.
+// This is the same pattern used by GitHub CLI (gh).
 // Override with BB_CLIENT_ID / BB_CLIENT_SECRET env vars or --client-id / --client-secret flags.
 var (
-	DefaultClientID     = ""
-	DefaultClientSecret = ""
+	DefaultClientID     = "n3XETVLxuMMtXJg37Q"
+	DefaultClientSecret = "uYuRebCD6XJegxfuPfTuAvah7hGQB7en"
 )
 
 const (
@@ -64,8 +66,8 @@ func StartCallbackServer() (int, chan string, chan error, error) {
 			if errMsg == "" {
 				errMsg = "no authorization code received"
 			}
-			w.Header().Set("Content-Type", "text/html")
-			fmt.Fprintf(w, `<html><body><h2>Authentication Failed</h2><p>%s</p><p>You may close this tab.</p></body></html>`, errMsg)
+			w.Header().Set("Content-Type", "text/plain")
+			fmt.Fprintf(w, "Authentication Failed: %s\n\nYou may close this tab.", errMsg)
 			errCh <- fmt.Errorf("OAuth callback error: %s", errMsg)
 			return
 		}

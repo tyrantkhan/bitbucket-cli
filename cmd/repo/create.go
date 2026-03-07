@@ -36,7 +36,7 @@ func newCmdCreate() *cli.Command {
 				Usage: "Project key to assign the repository to",
 			},
 		},
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 			client, err := f.APIClient()
 			if err != nil {
@@ -145,6 +145,6 @@ func newCmdCreate() *cli.Command {
 			}
 
 			return nil
-		},
+		}),
 	}
 }

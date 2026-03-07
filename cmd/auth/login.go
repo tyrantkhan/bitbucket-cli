@@ -47,7 +47,7 @@ func newCmdLogin() *cli.Command {
 				Usage: "OAuth consumer secret (overrides default)",
 			},
 		},
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
 			useWeb := cmd.Bool("web")
@@ -60,9 +60,10 @@ func newCmdLogin() *cli.Command {
 					huh.NewGroup(
 						huh.NewSelect[string]().
 							Title("How would you like to authenticate?").
+							Description("bb has no backend or servers — all requests go directly to the Bitbucket API and your credentials never leave your device.").
 							Options(
-								huh.NewOption("Web browser (OAuth)", "web"),
-								huh.NewOption("API token", "api_token"),
+								huh.NewOption("Web browser (OAuth) — recommended", "web"),
+								huh.NewOption("API token — if you prefer not to use OAuth", "api_token"),
 							).
 							Value(&method),
 					),
@@ -160,7 +161,7 @@ func newCmdLogin() *cli.Command {
 			}
 
 			return nil
-		},
+		}),
 	}
 }
 
@@ -215,6 +216,8 @@ func loginOAuth(f *cmdutil.Factory, cmd *cli.Command) (*auth.Credentials, error)
 	case code = <-codeCh:
 	case err := <-errCh:
 		return nil, err
+	case <-time.After(5 * time.Minute):
+		return nil, fmt.Errorf("authentication timed out after 5 minutes")
 	}
 
 	// Exchange code for tokens.
@@ -240,6 +243,13 @@ func loginAPIToken(f *cmdutil.Factory, cmd *cli.Command) (*auth.Credentials, err
 
 	// Interactive mode: prompt for credentials if not provided via flags.
 	if email == "" || apiToken == "" {
+		fmt.Fprintln(f.IOOut, output.Muted.Render(
+			"Generate an API token at: https://id.atlassian.com/manage-profile/security/api-tokens\n"+
+				"Your token needs these Bitbucket scopes: Repositories (read/write), Pull Requests (read/write), Pipelines (read/write).\n"+
+				"bb has no backend, servers, or analytics — all requests go directly from your machine to the Bitbucket API.\n"+
+				"Your credentials are stored locally and never leave your device.",
+		))
+
 		err := huh.NewForm(
 			huh.NewGroup(
 				huh.NewInput().
@@ -248,7 +258,7 @@ func loginAPIToken(f *cmdutil.Factory, cmd *cli.Command) (*auth.Credentials, err
 					Value(&email),
 				huh.NewInput().
 					Title("API Token").
-					Description("Generate one at https://id.atlassian.com/manage-profile/security/api-tokens").
+					Description("Paste your Atlassian API token").
 					EchoMode(huh.EchoModePassword).
 					Value(&apiToken),
 			),

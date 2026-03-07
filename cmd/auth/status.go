@@ -16,7 +16,7 @@ func newCmdStatus() *cli.Command {
 	return &cli.Command{
 		Name:  "status",
 		Usage: "Show authentication status",
-		Action: func(ctx context.Context, cmd *cli.Command) error {
+		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
 			client, err := f.APIClient()
@@ -74,7 +74,7 @@ func newCmdStatus() *cli.Command {
 			fmt.Fprintln(f.IOOut, output.Success.Render("Authenticated"))
 
 			return nil
-		},
+		}),
 	}
 }
 

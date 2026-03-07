@@ -2,12 +2,29 @@ package cmdutil
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/git"
 	"github.com/urfave/cli/v3"
 )
+
+// ErrShowedUsage is returned when command help was displayed instead of an error.
+var ErrShowedUsage = errors.New("showed usage")
+
+// HasExplicitInput returns true if the user explicitly set any flag or provided any positional args.
+func HasExplicitInput(cmd *cli.Command) bool {
+	if cmd.Args().Len() > 0 {
+		return true
+	}
+	for _, flag := range cmd.Flags {
+		if cmd.IsSet(flag.Names()[0]) {
+			return true
+		}
+	}
+	return false
+}
 
 // ResolveWorkspaceAndRepo resolves workspace and repo from flags, git remote, or config.
 func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, string, error) {
@@ -34,6 +51,10 @@ func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, str
 	}
 
 	if workspace == "" {
+		if !HasExplicitInput(cmd) {
+			cli.ShowSubcommandHelp(cmd)
+			return "", "", ErrShowedUsage
+		}
 		return "", "", fmt.Errorf("workspace is required. Use --workspace flag, or run from a Bitbucket repo")
 	}
 
@@ -41,6 +62,10 @@ func ResolveWorkspaceAndRepo(ctx context.Context, cmd *cli.Command) (string, str
 		return "", "", err
 	}
 	if repo == "" {
+		if !HasExplicitInput(cmd) {
+			cli.ShowSubcommandHelp(cmd)
+			return "", "", ErrShowedUsage
+		}
 		return "", "", fmt.Errorf("repository is required. Use --repo flag, or run from a Bitbucket repo")
 	}
 
@@ -68,6 +93,10 @@ func ResolveWorkspace(ctx context.Context, cmd *cli.Command) (string, error) {
 	}
 
 	if workspace == "" {
+		if !HasExplicitInput(cmd) {
+			cli.ShowSubcommandHelp(cmd)
+			return "", ErrShowedUsage
+		}
 		return "", fmt.Errorf("workspace is required. Use --workspace flag, or run from a Bitbucket repo")
 	}
 
