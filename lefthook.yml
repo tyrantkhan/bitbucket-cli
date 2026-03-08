@@ -27,17 +27,17 @@ pre-commit:
         if echo "$branch" | grep -qE '^(main|master|develop)$'; then
           exit 0
         fi
-        if ! echo "$branch" | grep -qE '^(main|master|develop|feature|fix|hotfix|chore|docs|refactor|test|ci|release)/[a-z0-9._-]+$'; then
+        if ! echo "$branch" | grep -qE '^(main|master|develop|feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|hotfix|release)/[0-9]+-[a-z0-9._-]+$'; then
           echo "ERROR: Branch name '$branch' does not follow naming convention."
           echo ""
           echo "  Allowed standalone: main, master, develop"
-          echo "  Format: <type>/<name>"
-          echo "  Types: feature, fix, hotfix, chore, docs, refactor, test, ci, release"
-          echo "  Name must be lowercase alphanumeric with dots, hyphens, or underscores."
+          echo "  Format: <type>/<issue>-<description>"
+          echo "  Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert, hotfix, release"
+          echo "  Description must be lowercase alphanumeric with dots, hyphens, or underscores."
           echo "  Examples:"
-          echo "    feature/1-add-oauth"
-          echo "    fix/login-bug"
-          echo "    chore/update-deps"
+          echo "    feat/1-add-oauth"
+          echo "    fix/12-login-bug"
+          echo "    chore/5-update-deps"
           exit 1
         fi
     lint:
