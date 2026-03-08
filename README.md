@@ -18,6 +18,12 @@ brew install tyrantkhan/tap/bb
 mise use -g ubi:tyrantkhan/bitbucket-cli[exe=bb]
 ```
 
+### Script
+
+```sh
+curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh
+```
+
 ### From source
 
 ```sh
@@ -27,6 +33,12 @@ go install github.com/tyrantkhan/bb@latest
 ### Binary releases
 
 Download from [GitHub Releases](https://github.com/tyrantkhan/bitbucket-cli/releases).
+
+> **macOS note:** Pre-built binaries are not yet code-signed. On macOS you will need to remove the quarantine attribute after downloading:
+>
+> ```sh
+> xattr -d com.apple.quarantine /path/to/bb
+> ```
 
 ## Quick start
 

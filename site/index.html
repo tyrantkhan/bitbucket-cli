@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bb — Bitbucket Cloud CLI</title>
+  <meta name="description" content="A fast, interactive command-line interface for Bitbucket Cloud. Manage repositories, pull requests, and pipelines without leaving your terminal.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%3E</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#0f172a',
+            card: '#1e293b',
+            accent: '#22d3ee',
+            'accent-dim': '#0891b2',
+          },
+          fontFamily: {
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { background: #0f172a; }
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #1e293b;
+    }
+    .copy-btn:hover { color: #22d3ee; }
+    .feature-card {
+      background: linear-gradient(135deg, #1e293b 0%, #162032 100%);
+      border: 1px solid #334155;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover {
+      border-color: #22d3ee;
+      transform: translateY(-2px);
+    }
+    .glow { text-shadow: 0 0 40px rgba(34, 211, 238, 0.3); }
+    .hero-gradient {
+      background: radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 60%);
+    }
+    .cmd-group summary { cursor: pointer; list-style: none; }
+    .cmd-group summary::-webkit-details-marker { display: none; }
+    .cmd-group[open] .chevron { transform: rotate(90deg); }
+    .chevron { transition: transform 0.15s; }
+  </style>
+</head>
+<body class="text-slate-300 antialiased">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-xl font-bold text-white font-mono">bb</span>
+        <span class="text-sm text-slate-500 hidden sm:inline">Bitbucket Cloud CLI</span>
+      </a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="#install" class="text-slate-400 hover:text-white transition-colors">Install</a>
+        <a href="#commands" class="text-slate-400 hover:text-white transition-colors">Commands</a>
+        <a href="https://github.com/tyrantkhan/bitbucket-cli" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero-gradient pt-32 pb-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-6xl sm:text-7xl font-bold text-white font-mono glow mb-4">bb</h1>
+      <p class="text-xl sm:text-2xl text-slate-400 mb-2">Bitbucket Cloud CLI</p>
+      <p class="text-lg text-slate-500 mb-10 max-w-2xl mx-auto">A fast, interactive command-line interface for Bitbucket Cloud. Manage repositories, pull requests, and pipelines without leaving your terminal.</p>
+
+      <div class="code-block rounded-lg p-4 max-w-xl mx-auto mb-10 relative group">
+        <div class="flex items-center justify-between">
+          <code class="text-sm sm:text-base text-cyan-400 font-mono">curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh</code>
+          <button onclick="navigator.clipboard.writeText('curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh')" class="copy-btn text-slate-600 ml-3 flex-shrink-0" title="Copy">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <img src="screenshot.png" alt="bb pr status output" class="rounded-xl shadow-2xl shadow-cyan-900/10 border border-slate-700 max-w-2xl mx-auto w-full">
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Everything you need</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="feature-card rounded-xl p-6">
+          <div class="text-accent text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+          </div>
+          <h3 class="text-white font-semibold mb-2">Pull Requests</h3>
+          <p class="text-sm text-slate-400">Create, review, merge, approve, and track PRs. View diffs and activity feeds right in your terminal.</p>
+        </div>
+
+        <div class="feature-card rounded-xl p-6">
+          <div class="text-accent text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728M12 9v3m0 0v3m0-3h3m-3 0H9"/></svg>
+          </div>
+          <h3 class="text-white font-semibold mb-2">Pipelines</h3>
+          <p class="text-sm text-slate-400">Trigger, monitor, and tail pipeline logs. Run custom pipelines with variables from the command line.</p>
+        </div>
+
+        <div class="feature-card rounded-xl p-6">
+          <div class="text-accent text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+          </div>
+          <h3 class="text-white font-semibold mb-2">Repositories</h3>
+          <p class="text-sm text-slate-400">List, view, create, and clone repos. Works with all your workspaces and projects.</p>
+        </div>
+
+        <div class="feature-card rounded-xl p-6">
+          <div class="text-accent text-2xl mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="text-white font-semibold mb-2">Smart Defaults</h3>
+          <p class="text-sm text-slate-400">Workspace, repo, and branch are auto-detected from your git remotes. Just run commands and go.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install" class="py-20 px-6 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Install</h2>
+
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-white font-medium mb-2">Homebrew</h3>
+          <div class="code-block rounded-lg p-4 relative group">
+            <code class="text-sm text-cyan-400 font-mono">brew install tyrantkhan/tap/bb</code>
+            <button onclick="navigator.clipboard.writeText('brew install tyrantkhan/tap/bb')" class="copy-btn absolute top-3 right-3 text-slate-600" title="Copy">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-white font-medium mb-2">mise</h3>
+          <div class="code-block rounded-lg p-4 relative group">
+            <code class="text-sm text-cyan-400 font-mono">mise use -g ubi:tyrantkhan/bitbucket-cli[exe=bb]</code>
+            <button onclick="navigator.clipboard.writeText('mise use -g ubi:tyrantkhan/bitbucket-cli[exe=bb]')" class="copy-btn absolute top-3 right-3 text-slate-600" title="Copy">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-white font-medium mb-2">Shell script</h3>
+          <div class="code-block rounded-lg p-4 relative group">
+            <code class="text-sm text-cyan-400 font-mono">curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh</code>
+            <button onclick="navigator.clipboard.writeText('curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh')" class="copy-btn absolute top-3 right-3 text-slate-600" title="Copy">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-white font-medium mb-2">Go</h3>
+          <div class="code-block rounded-lg p-4 relative group">
+            <code class="text-sm text-cyan-400 font-mono">go install github.com/tyrantkhan/bb@latest</code>
+            <button onclick="navigator.clipboard.writeText('go install github.com/tyrantkhan/bb@latest')" class="copy-btn absolute top-3 right-3 text-slate-600" title="Copy">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-white font-medium mb-2">Binary releases</h3>
+          <p class="text-sm text-slate-400">Download pre-built binaries from <a href="https://github.com/tyrantkhan/bitbucket-cli/releases" class="text-accent hover:underline">GitHub Releases</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section class="py-20 px-6 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Quick start</h2>
+      <div class="code-block rounded-lg p-6 font-mono text-sm space-y-1">
+        <p class="text-slate-500"># Authenticate</p>
+        <p class="text-cyan-400">bb auth login</p>
+        <p class="mt-3 text-slate-500"># List repos in your workspace</p>
+        <p class="text-cyan-400">bb repo list</p>
+        <p class="mt-3 text-slate-500"># View open pull requests</p>
+        <p class="text-cyan-400">bb pr list</p>
+        <p class="mt-3 text-slate-500"># Create a pull request from the current branch</p>
+        <p class="text-cyan-400">bb pr create</p>
+        <p class="mt-3 text-slate-500"># Run a pipeline</p>
+        <p class="text-cyan-400">bb pipeline run</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commands -->
+  <section id="commands" class="py-20 px-6 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Commands</h2>
+
+      <div class="space-y-4">
+        <!-- Auth -->
+        <details class="cmd-group code-block rounded-lg" open>
+          <summary class="p-4 flex items-center gap-3 text-white font-medium">
+            <span class="chevron text-slate-500 text-sm">&#9654;</span>
+            <span>Auth</span>
+            <span class="text-xs text-slate-500 font-normal ml-auto">3 commands</span>
+          </summary>
+          <div class="px-4 pb-4">
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-slate-800">
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb auth login</td>
+                  <td class="py-2 text-slate-400">Authenticate with Bitbucket Cloud</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb auth logout</td>
+                  <td class="py-2 text-slate-400">Remove stored credentials</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb auth status</td>
+                  <td class="py-2 text-slate-400">Show authentication status</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <!-- Repositories -->
+        <details class="cmd-group code-block rounded-lg">
+          <summary class="p-4 flex items-center gap-3 text-white font-medium">
+            <span class="chevron text-slate-500 text-sm">&#9654;</span>
+            <span>Repositories</span>
+            <span class="text-xs text-slate-500 font-normal ml-auto">4 commands</span>
+          </summary>
+          <div class="px-4 pb-4">
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-slate-800">
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb repo list</td>
+                  <td class="py-2 text-slate-400">List repositories in a workspace</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb repo view</td>
+                  <td class="py-2 text-slate-400">View repository details</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb repo create</td>
+                  <td class="py-2 text-slate-400">Create a new repository</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb repo clone</td>
+                  <td class="py-2 text-slate-400">Clone a repository</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <!-- Pull Requests -->
+        <details class="cmd-group code-block rounded-lg">
+          <summary class="p-4 flex items-center gap-3 text-white font-medium">
+            <span class="chevron text-slate-500 text-sm">&#9654;</span>
+            <span>Pull Requests</span>
+            <span class="text-xs text-slate-500 font-normal ml-auto">10 commands</span>
+          </summary>
+          <div class="px-4 pb-4">
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-slate-800">
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr list</td>
+                  <td class="py-2 text-slate-400">List pull requests</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr view</td>
+                  <td class="py-2 text-slate-400">View pull request details</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr create</td>
+                  <td class="py-2 text-slate-400">Create a pull request</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr merge</td>
+                  <td class="py-2 text-slate-400">Merge a pull request</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr approve</td>
+                  <td class="py-2 text-slate-400">Approve a pull request</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr decline</td>
+                  <td class="py-2 text-slate-400">Decline a pull request</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr comment</td>
+                  <td class="py-2 text-slate-400">Add a comment</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr diff</td>
+                  <td class="py-2 text-slate-400">Show the diff</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr activity</td>
+                  <td class="py-2 text-slate-400">Show activity feed</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pr status</td>
+                  <td class="py-2 text-slate-400">Show status of relevant PRs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <!-- Pipelines -->
+        <details class="cmd-group code-block rounded-lg">
+          <summary class="p-4 flex items-center gap-3 text-white font-medium">
+            <span class="chevron text-slate-500 text-sm">&#9654;</span>
+            <span>Pipelines</span>
+            <span class="text-xs text-slate-500 font-normal ml-auto">5 commands</span>
+          </summary>
+          <div class="px-4 pb-4">
+            <table class="w-full text-sm">
+              <tbody class="divide-y divide-slate-800">
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pipeline list</td>
+                  <td class="py-2 text-slate-400">List pipelines</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pipeline view</td>
+                  <td class="py-2 text-slate-400">View pipeline details</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pipeline run</td>
+                  <td class="py-2 text-slate-400">Run a pipeline</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pipeline stop</td>
+                  <td class="py-2 text-slate-400">Stop a running pipeline</td>
+                </tr>
+                <tr>
+                  <td class="py-2 pr-4 text-cyan-400 font-mono whitespace-nowrap">bb pipeline logs</td>
+                  <td class="py-2 text-slate-400">View step logs</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-8">Run <code class="text-cyan-400">bb reference</code> for the full command reference.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 py-12 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <div class="flex items-center gap-2">
+        <span class="font-mono font-bold text-slate-400">bb</span>
+        <span>&middot;</span>
+        <span>MIT License</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/tyrantkhan/bitbucket-cli" class="hover:text-white transition-colors">GitHub</a>
+        <a href="https://github.com/tyrantkhan/bitbucket-cli/releases" class="hover:text-white transition-colors">Releases</a>
+        <a href="https://github.com/tyrantkhan/bitbucket-cli/issues" class="hover:text-white transition-colors">Issues</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
