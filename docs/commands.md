@@ -365,7 +365,7 @@ bb search code "handleError" --format json
 | `--language` | `-l` | Filter by language |
 | `--path` | `-p` | Filter by file path |
 
-Convenience flags append modifiers to the query string (e.g., `--repo myrepo` adds `repo:myrepo`). You can also type modifiers inline in the query.
+Convenience flags append modifiers to the query string (e.g., `--repo myrepo` adds `repo:myrepo`). You can also type modifiers inline in the query. Note that this command's default `--limit` is 20, not the global default of 30.
 
 ---
 
