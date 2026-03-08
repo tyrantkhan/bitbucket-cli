@@ -219,9 +219,9 @@
       <h2 class="text-3xl font-bold text-white text-center mb-12">Shell completions</h2>
       <div class="code-block rounded-lg p-6 font-mono text-sm space-y-1">
         <p class="text-slate-500"># Bash — add to ~/.bashrc</p>
-        <p class="text-cyan-400">source &lt;(bb completion bash)</p>
+        <p class="text-cyan-400">if command -v bb &gt;/dev/null; then source &lt;(bb completion bash); fi</p>
         <p class="mt-3 text-slate-500"># Zsh — add to ~/.zshrc</p>
-        <p class="text-cyan-400">source &lt;(bb completion zsh)</p>
+        <p class="text-cyan-400">if command -v bb &gt;/dev/null; then source &lt;(bb completion zsh); fi</p>
         <p class="mt-3 text-slate-500"># Fish</p>
         <p class="text-cyan-400">bb completion fish &gt; ~/.config/fish/completions/bb.fish</p>
         <p class="mt-3 text-slate-500"># PowerShell</p>

@@ -176,11 +176,11 @@ default_format: table
 ## Shell completions
 
 ```sh
-# Bash
-source <(bb completion bash)
+# Bash — add to ~/.bashrc
+if command -v bb >/dev/null; then source <(bb completion bash); fi
 
-# Zsh
-source <(bb completion zsh)
+# Zsh — add to ~/.zshrc
+if command -v bb >/dev/null; then source <(bb completion zsh); fi
 
 # Fish
 bb completion fish > ~/.config/fish/completions/bb.fish

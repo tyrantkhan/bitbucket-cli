@@ -357,10 +357,10 @@ bb completion pwsh
 
 ```sh
 # Bash — add to ~/.bashrc
-source <(bb completion bash)
+if command -v bb >/dev/null; then source <(bb completion bash); fi
 
 # Zsh — add to ~/.zshrc
-source <(bb completion zsh)
+if command -v bb >/dev/null; then source <(bb completion zsh); fi
 
 # Fish
 bb completion fish > ~/.config/fish/completions/bb.fish
