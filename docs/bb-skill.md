@@ -104,15 +104,6 @@ bb pipeline stop {uuid}               # stop running pipeline
 | `bb pipeline stop <uuid>` | Stop a running pipeline |
 | `bb pipeline logs <uuid>` | View step logs (`--step`, `--follow`) |
 
-### Shell Completions
-
-```sh
-bb completion bash   # output bash completion script
-bb completion zsh    # output zsh completion script
-bb completion fish   # output fish completion script
-bb completion pwsh   # output PowerShell completion script
-```
-
 ## Tips
 
 - **Always use `--format json`** when reading bb output — the default table format is designed for humans, not machines. JSON output is structured and reliable to parse.
