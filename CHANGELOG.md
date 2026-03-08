@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.9](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.8...v0.0.9) (2026-03-08)
+
+
+### Bug Fixes
+
+* [#29](https://github.com/tyrantkhan/bitbucket-cli/issues/29) add completion command to cmd menu and remove release auto-merge ([#30](https://github.com/tyrantkhan/bitbucket-cli/issues/30)) ([22d72f0](https://github.com/tyrantkhan/bitbucket-cli/commit/22d72f0daf02bc9030b73ba4df046ef7a56af692))
+
+
+### Refactoring
+
+* **auth:** [#32](https://github.com/tyrantkhan/bitbucket-cli/issues/32) restyle login form with lipgloss info box ([#33](https://github.com/tyrantkhan/bitbucket-cli/issues/33)) ([4d9312f](https://github.com/tyrantkhan/bitbucket-cli/commit/4d9312fe3ee9e6bf4914f8bac03e12bc7628437b))
+
 ## [0.0.8](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.7...v0.0.8) (2026-03-08)
 
 
