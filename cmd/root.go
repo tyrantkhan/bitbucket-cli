@@ -74,7 +74,11 @@ func NewRootCommand() *cli.Command {
 		Usage:                 "Bitbucket Cloud CLI",
 		Version:               Version,
 		EnableShellCompletion: true,
-		CommandNotFound:       cmdutil.CommandNotFound,
+		ConfigureShellCompletionCommand: func(cmd *cli.Command) {
+			cmd.Hidden = false
+			cmd.Usage = "Generate shell completion script (bash, zsh, fish, pwsh)"
+		},
+		CommandNotFound: cmdutil.CommandNotFound,
 		Before: func(ctx context.Context, cmd *cli.Command) (context.Context, error) {
 			f, err := cmdutil.NewFactory()
 			if err != nil {
