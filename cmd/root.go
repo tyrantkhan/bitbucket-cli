@@ -95,6 +95,7 @@ func NewRootCommand() *cli.Command {
 			if os.Getenv("BB_NO_UPDATE_NOTIFIER") == "1" {
 				return nil
 			}
+			// Check for newer versions in the background-safe After hook.
 			latest, err := update.CheckForUpdate(Version)
 			if err != nil {
 				return nil //nolint:nilerr // update check failures are non-fatal
