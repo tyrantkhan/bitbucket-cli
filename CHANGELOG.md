@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.5...v0.0.6) (2026-03-08)
+
+
+### Bug Fixes
+
+* [#19](https://github.com/tyrantkhan/bitbucket-cli/issues/19) improve unknown command error handling ([#20](https://github.com/tyrantkhan/bitbucket-cli/issues/20)) ([4ec9f9b](https://github.com/tyrantkhan/bitbucket-cli/commit/4ec9f9b53589cedb0ccf0acc04205ecbaec3d3af))
+
 ## [0.0.5](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.4...v0.0.5) (2026-03-08)
 
 
