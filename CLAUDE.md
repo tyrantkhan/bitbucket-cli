@@ -45,6 +45,23 @@ make test     # go test ./...
 make lint     # golangci-lint
 ```
 
+## Commit & PR title format
+
+Conventional Commits required for both commits and PR titles (PR titles become squash merge commits).
+
+Format: `<type>[(<scope>)]: #<issue> <description>`
+
+- **Scope** is optional but preferred — use the module name (`auth`, `pr`, `repo`, `pipeline`, `api`, `config`)
+- **Issue number** is required — always create an issue first if one doesn't exist
+
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+Examples:
+- `feat(auth): #7 add spinner to login flow`
+- `fix(pr): #12 handle empty reviewer list`
+- `docs: #15 add shell completions to README`
+- `ci: #16 add PR title lint workflow`
+
 ## Conventions
 
 - Don't add Co-Authored-By to commits
@@ -57,5 +74,5 @@ make lint     # golangci-lint
 ## When modifying commands
 
 - Update `docs/commands.md` if flags or behavior change
-- Update `docs/bb-ai-skills.md` if new workflows are added
+- Update `docs/bb-skill.md` if new workflows are added
 - The `bb reference` command auto-generates from command definitions — no manual update needed
