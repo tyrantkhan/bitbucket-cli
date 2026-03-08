@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
-	"github.com/tyrantkhan/bb/internal/models"
-	"github.com/tyrantkhan/bb/internal/output"
 	"github.com/urfave/cli/v3"
 )
 
@@ -43,38 +40,7 @@ func newCmdDraft() *cli.Command {
 			}
 
 			path := fmt.Sprintf("/2.0/repositories/%s/%s/pullrequests/%d", workspace, repo, prID)
-
-			resp, err := client.Get(path)
-			if err != nil {
-				return err
-			}
-
-			var pr models.PullRequest
-			if err := api.DecodeJSON(resp, &pr); err != nil {
-				return fmt.Errorf("failed to decode pull request: %w", err)
-			}
-
-			if pr.Draft {
-				fmt.Fprintln(f.IOOut, output.Muted.Render(
-					fmt.Sprintf("Pull request #%d is already a draft.", prID),
-				))
-				return nil
-			}
-
-			body := buildPRUpdateBody(pr)
-			body["draft"] = true
-
-			resp, err = client.Put(path, body)
-			if err != nil {
-				return err
-			}
-			_ = resp.Body.Close()
-
-			fmt.Fprintln(f.IOOut, output.Success.Render(
-				fmt.Sprintf("Pull request #%d is now a draft.", prID),
-			))
-
-			return nil
+			return setDraftStatus(client, f.IOOut, path, prID, true)
 		},
 	}
 }

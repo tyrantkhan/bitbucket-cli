@@ -17,7 +17,7 @@ import (
 func newCmdEdit() *cli.Command {
 	return &cli.Command{
 		Name:      "edit",
-		Usage:     "Edit a pull request's title, description, or reviewers",
+		Usage:     "Edit a pull request's title and description (use flags for reviewers)",
 		ArgsUsage: "<id>",
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
