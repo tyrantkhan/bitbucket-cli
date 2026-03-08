@@ -29,3 +29,21 @@ jobs:
             chore
             revert
           requireScope: false
+
+  pr-title-priority:
+    name: pr-title-priority
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .github/scripts
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR title uses highest-priority commit type
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: ./check-pr-title-priority.sh

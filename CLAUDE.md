@@ -70,6 +70,12 @@ Format: `<type>[(<scope>)]: #<issue> <description>`
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
+PR title must use the highest-priority conventional commit type from its commits, so release-please picks up version-bumping changes:
+
+- Priority: `feat` > `fix` > `refactor` > `perf` > all others
+- Example: if a PR has both `docs` and `fix` commits, the title must use `fix`
+- CI enforces this via the `pr-title-priority` job in the `pr-title` workflow
+
 Examples:
 - `feat(auth): #7 add spinner to login flow`
 - `fix(pr): #12 handle empty reviewer list`
