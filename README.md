@@ -2,12 +2,20 @@
 
 A fast, interactive command-line interface for Bitbucket Cloud. Manage repositories, pull requests, and pipelines without leaving your terminal.
 
+![bb pr status](screenshot.png)
+
 ## Install
 
 ### Homebrew
 
 ```sh
 brew install tyrantkhan/tap/bb
+```
+
+### mise
+
+```sh
+mise use -g ubi:tyrantkhan/bitbucket-cli[exe=bb]
 ```
 
 ### From source
