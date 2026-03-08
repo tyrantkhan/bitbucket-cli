@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.7...v0.0.8) (2026-03-08)
+
+
+### Features
+
+* **search:** [#26](https://github.com/tyrantkhan/bitbucket-cli/issues/26) add bb search code command ([#27](https://github.com/tyrantkhan/bitbucket-cli/issues/27)) ([8b80689](https://github.com/tyrantkhan/bitbucket-cli/commit/8b80689e80410e7a5d0caa95e578f0b4affa8efd))
+
 ## [0.0.7](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.6...v0.0.7) (2026-03-08)
 
 
