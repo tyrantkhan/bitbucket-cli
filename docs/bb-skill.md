@@ -22,6 +22,9 @@ bb pr approve 42                      # approve
 bb pr comment 42 --body "LGTM"        # add comment
 bb pr comment 42 --body "Fix this" --file src/handler.go --line 55  # inline comment
 bb pr merge 42 --strategy squash      # merge
+bb pr ready 42                        # mark draft as ready
+bb pr draft 42                        # convert to draft
+bb pr edit 42 --title "New title"     # edit PR fields
 ```
 
 ### Repositories
@@ -87,6 +90,9 @@ bb pipeline stop {uuid}               # stop running pipeline
 | `bb pr comment <id>` | Add a comment (`--body`, `--file`, `--line` for inline) |
 | `bb pr diff <id>` | Show diff (`--stat` for summary) |
 | `bb pr activity <id>` | Show activity feed |
+| `bb pr ready <id>` | Mark draft PR as ready for review |
+| `bb pr draft <id>` | Convert PR to draft |
+| `bb pr edit <id>` | Edit title, description, or reviewers (`--title`, `--description`, `--reviewer`, `--add-reviewer`, `--remove-reviewer`) |
 
 ### Pipelines
 

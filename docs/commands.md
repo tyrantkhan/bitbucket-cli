@@ -238,6 +238,43 @@ Show status of pull requests relevant to you (created by you, reviewing, etc.).
 bb pr status
 ```
 
+### `bb pr ready <id>`
+
+Mark a draft pull request as ready for review.
+
+```sh
+bb pr ready 42
+```
+
+### `bb pr draft <id>`
+
+Convert a pull request to draft.
+
+```sh
+bb pr draft 42
+```
+
+### `bb pr edit <id>`
+
+Edit a pull request's title, description, or reviewers. Opens an interactive form if no flags are provided.
+
+```sh
+bb pr edit 42 --title "Updated title"
+bb pr edit 42 --description "New description"
+bb pr edit 42 --add-reviewer "{uuid}"
+bb pr edit 42 --remove-reviewer "{uuid}"
+bb pr edit 42 --reviewer "{uuid1}" --reviewer "{uuid2}"
+bb pr edit 42    # interactive mode
+```
+
+| Flag | Description |
+|---|---|
+| `--title` | New title |
+| `--description` | New description |
+| `--reviewer` | Replace all reviewers (UUID, repeatable) |
+| `--add-reviewer` | Add a reviewer (UUID, repeatable) |
+| `--remove-reviewer` | Remove a reviewer (UUID, repeatable) |
+
 ---
 
 ## Pipelines

@@ -45,6 +45,20 @@ make test     # go test ./...
 make lint     # golangci-lint
 ```
 
+## Branch naming
+
+Format: `<type>/<issue>-<description>`
+
+- **Type** must be one of: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`, `hotfix`, `release`
+- **Issue number** is required — always create an issue first if one doesn't exist
+- **Description** must be lowercase alphanumeric with dots, hyphens, or underscores
+- Standalone branches `main`, `master`, `develop` are also allowed
+
+Examples:
+- `feat/1-add-oauth`
+- `fix/12-login-bug`
+- `chore/5-update-deps`
+
 ## Commit & PR title format
 
 Conventional Commits required for both commits and PR titles (PR titles become squash merge commits).

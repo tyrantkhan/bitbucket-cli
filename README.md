@@ -119,6 +119,9 @@ bb has no backend or servers. All requests go directly from your machine to the 
 | `bb pr diff <id>` | Show the diff |
 | `bb pr activity <id>` | Show activity feed |
 | `bb pr status` | Show status of relevant PRs |
+| `bb pr ready <id>` | Mark draft PR as ready for review |
+| `bb pr draft <id>` | Convert PR to draft |
+| `bb pr edit <id>` | Edit title, description, or reviewers |
 
 ### Pipelines
 

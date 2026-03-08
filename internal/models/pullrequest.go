@@ -11,6 +11,7 @@ type PullRequest struct {
 	Author            User          `json:"author"`
 	Source            PREndpoint    `json:"source"`
 	Destination       PREndpoint    `json:"destination"`
+	Draft             bool          `json:"draft"`
 	CloseSourceBranch bool          `json:"close_source_branch"`
 	MergeCommit       *Commit       `json:"merge_commit"`
 	Reviewers         []User        `json:"reviewers"`

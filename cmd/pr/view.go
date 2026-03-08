@@ -96,6 +96,9 @@ func newCmdView() *cli.Command {
 			// Rich detail view.
 			fmt.Fprintf(f.IOOut, "%s #%d\n", output.Header.Render(pr.Title), pr.ID)
 			fmt.Fprintf(f.IOOut, "%s  %s\n", output.Bold.Render("State:"), output.StatusColor(pr.State).Render(pr.State))
+			if pr.Draft {
+				fmt.Fprintf(f.IOOut, "%s  %s\n", output.Bold.Render("Draft:"), output.Yellow.Render("DRAFT"))
+			}
 			fmt.Fprintf(f.IOOut, "%s %s\n", output.Bold.Render("Author:"), pr.Author.DisplayName)
 			fmt.Fprintf(f.IOOut, "%s %s → %s\n",
 				output.Bold.Render("Branch:"),
