@@ -18,11 +18,13 @@ jobs:
     steps:
       - id: rp
         uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PAT }}
       - name: Auto-merge release PR
         if: steps.rp.outputs.pr
-        run: gh pr merge ${{ fromJSON(steps.rp.outputs.pr).number }} --squash --admin --repo ${{ github.repository }}
+        run: gh pr merge ${{ fromJSON(steps.rp.outputs.pr).number }} --squash --auto --repo ${{ github.repository }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
 
   goreleaser:
     name: GoReleaser
