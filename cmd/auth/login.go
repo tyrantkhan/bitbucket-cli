@@ -10,6 +10,7 @@ import (
 
 	"charm.land/huh/v2"
 	"charm.land/huh/v2/spinner"
+	"charm.land/lipgloss/v2"
 	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/auth"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
@@ -56,15 +57,22 @@ func newCmdLogin() *cli.Command {
 
 			// If neither flag is set, show interactive picker.
 			if !useWeb && !useAPIToken {
+				box := lipgloss.NewStyle().
+					Width(50).
+					BorderStyle(lipgloss.RoundedBorder()).
+					BorderForeground(lipgloss.Color("#0052CC")).
+					Padding(1, 2).
+					Render("bb has no backend or servers — all requests go directly to the Bitbucket API and your credentials never leave your device.")
+				fmt.Fprintln(f.IOOut, box)
+
 				var method string
 				err := huh.NewForm(
 					huh.NewGroup(
 						huh.NewSelect[string]().
 							Title("How would you like to authenticate?").
-							Description("bb has no backend or servers — all requests go directly to the Bitbucket API and your credentials never leave your device.").
 							Options(
 								huh.NewOption("Web browser (OAuth) — recommended", "web"),
-								huh.NewOption("API token — if you prefer not to use OAuth", "api_token"),
+								huh.NewOption("API token", "api_token"),
 							).
 							Value(&method),
 					),
