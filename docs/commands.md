@@ -340,6 +340,35 @@ bb pipeline logs {uuid} --follow    # live tail
 
 ---
 
+## Search
+
+### `bb search code <query>`
+
+Search for code across repositories in a workspace.
+
+```sh
+bb search code "handleError"
+bb search code "func main" --repo myrepo --extension go
+bb search code "TODO" --language python
+bb search code "import" --path src/
+bb search code "func repo:myrepo ext:go"    # inline modifiers work too
+bb search code "handleError" --format json
+```
+
+| Flag | Short | Description |
+|---|---|---|
+| `--workspace` | `-w` | Bitbucket workspace slug |
+| `--format` | | Output format: `table` (default), `json` |
+| `--limit` | | Maximum number of results (default: 20) |
+| `--repo` | `-R` | Filter by repository slug |
+| `--extension` | `-e` | Filter by file extension |
+| `--language` | `-l` | Filter by language |
+| `--path` | `-p` | Filter by file path |
+
+Convenience flags append modifiers to the query string (e.g., `--repo myrepo` adds `repo:myrepo`). You can also type modifiers inline in the query.
+
+---
+
 ## Config
 
 ### `bb config get <key>`
