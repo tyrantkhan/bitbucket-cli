@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.3...v0.0.4) (2026-03-08)
+
+
+### Refactoring
+
+* **auth:** improve login TUI and document shell completions ([#8](https://github.com/tyrantkhan/bitbucket-cli/issues/8)) ([9859c80](https://github.com/tyrantkhan/bitbucket-cli/commit/9859c806314a5a88cd00d46717eecd68d811502e))
+
 ## [0.0.3](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.2...v0.0.3) (2026-03-07)
 
 
