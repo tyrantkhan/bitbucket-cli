@@ -36,6 +36,15 @@ bb repo create --name myrepo --private
 bb repo clone myrepo --protocol ssh
 ```
 
+### Search
+
+```sh
+bb search code "handleError"                          # search across workspace
+bb search code "func main" --repo myrepo --extension go  # filter by repo and extension
+bb search code "TODO" --language python               # filter by language
+bb search code "handleError" --format json            # JSON output
+```
+
 ### Pipelines
 
 ```sh
@@ -94,6 +103,12 @@ bb pipeline stop {uuid}               # stop running pipeline
 | `bb pr ready <id>` | Mark draft PR as ready for review |
 | `bb pr draft <id>` | Convert PR to draft |
 | `bb pr edit <id>` | Edit title, description, or reviewers (`--title`, `--description`, `--reviewer`, `--add-reviewer`, `--remove-reviewer`) |
+
+### Search
+
+| Command | Description |
+|---|---|
+| `bb search code <query>` | Search for code across repos (`--repo`, `--extension`, `--language`, `--path`) |
 
 ### Pipelines
 

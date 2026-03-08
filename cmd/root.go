@@ -12,6 +12,7 @@ import (
 	pipelineCmd "github.com/tyrantkhan/bb/cmd/pipeline"
 	prCmd "github.com/tyrantkhan/bb/cmd/pr"
 	repoCmd "github.com/tyrantkhan/bb/cmd/repo"
+	searchCmd "github.com/tyrantkhan/bb/cmd/search"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
 	"github.com/tyrantkhan/bb/internal/output"
 	"github.com/tyrantkhan/bb/internal/update"
@@ -111,6 +112,7 @@ func NewRootCommand() *cli.Command {
 			repoCmd.NewCmdRepo(),
 			prCmd.NewCmdPR(),
 			pipelineCmd.NewCmdPipeline(),
+			searchCmd.NewCmdSearch(),
 			{
 				Name:    "version",
 				Aliases: []string{"v"},
