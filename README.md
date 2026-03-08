@@ -170,6 +170,26 @@ default_format: table
 | `BB_CLIENT_SECRET` | Override OAuth consumer secret |
 | `NO_COLOR` | Disable color output |
 
+## Shell completions
+
+```sh
+# Bash
+source <(bb completion bash)
+
+# Zsh
+source <(bb completion zsh)
+
+# Fish
+bb completion fish > ~/.config/fish/completions/bb.fish
+
+# PowerShell
+bb completion pwsh > bb.ps1
+```
+
+## AI skill
+
+bb provides a [skill file](docs/bb-skill.md) for AI coding assistants (Claude Code, Cursor, etc.) to learn bb's commands and help you with Bitbucket operations. Download it and add it to your project.
+
 ## Full reference
 
 ```sh

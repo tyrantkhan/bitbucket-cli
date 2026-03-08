@@ -212,6 +212,23 @@
     </div>
   </section>
 
+  <!-- Shell Completions -->
+  <section class="py-20 px-6 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Shell completions</h2>
+      <div class="code-block rounded-lg p-6 font-mono text-sm space-y-1">
+        <p class="text-slate-500"># Bash — add to ~/.bashrc</p>
+        <p class="text-cyan-400">source &lt;(bb completion bash)</p>
+        <p class="mt-3 text-slate-500"># Zsh — add to ~/.zshrc</p>
+        <p class="text-cyan-400">source &lt;(bb completion zsh)</p>
+        <p class="mt-3 text-slate-500"># Fish</p>
+        <p class="text-cyan-400">bb completion fish &gt; ~/.config/fish/completions/bb.fish</p>
+        <p class="mt-3 text-slate-500"># PowerShell</p>
+        <p class="text-cyan-400">bb completion pwsh &gt; bb.ps1</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Commands -->
   <section id="commands" class="py-20 px-6 border-t border-slate-800">
     <div class="max-w-3xl mx-auto">
@@ -369,6 +386,18 @@
       </div>
 
       <p class="text-center text-sm text-slate-500 mt-8">Run <code class="text-cyan-400">bb reference</code> for the full command reference.</p>
+    </div>
+  </section>
+
+  <!-- AI Skill -->
+  <section class="py-20 px-6 border-t border-slate-800">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">AI skill</h2>
+      <p class="text-slate-400 mb-8">Download the bb skill file and add it to your project so AI coding assistants (Claude Code, Cursor, etc.) can help you with Bitbucket operations.</p>
+      <a href="https://raw.githubusercontent.com/tyrantkhan/bitbucket-cli/main/docs/bb-skill.md" download="bb-skill.md" class="inline-flex items-center gap-2 px-6 py-3 bg-accent/10 border border-accent/30 text-accent rounded-lg hover:bg-accent/20 transition-colors font-medium">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Download bb-skill.md
+      </a>
     </div>
   </section>
 

@@ -286,6 +286,41 @@ Stop a running pipeline. Prompts for confirmation.
 bb pipeline stop {uuid}
 ```
 
+---
+
+## Shell Completions
+
+### `bb completion <shell>`
+
+Output shell completion script for the specified shell.
+
+```sh
+bb completion bash
+bb completion zsh
+bb completion fish
+bb completion pwsh
+```
+
+**Setup:**
+
+```sh
+# Bash — add to ~/.bashrc
+source <(bb completion bash)
+
+# Zsh — add to ~/.zshrc
+source <(bb completion zsh)
+
+# Fish
+bb completion fish > ~/.config/fish/completions/bb.fish
+
+# PowerShell — output and source the script
+bb completion pwsh > bb.ps1
+```
+
+---
+
+## Pipelines
+
 ### `bb pipeline logs <uuid>`
 
 View logs for a pipeline step. Interactive step picker if `--step` is not provided.
