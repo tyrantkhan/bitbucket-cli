@@ -1,9 +1,9 @@
 # bb — Bitbucket Cloud CLI
 
 [![CI](https://github.com/tyrantkhan/bitbucket-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/tyrantkhan/bitbucket-cli/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/tyrantkhan/bitbucket-cli)](https://github.com/tyrantkhan/bitbucket-cli/releases/latest)<br>
+[![Release](https://img.shields.io/github/v/release/tyrantkhan/bitbucket-cli)](https://github.com/tyrantkhan/bitbucket-cli/releases/latest)
 [![Go](https://img.shields.io/github/go-mod/go-version/tyrantkhan/bitbucket-cli)](https://go.dev/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)<br>
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Homebrew](https://img.shields.io/badge/homebrew-tyrantkhan%2Ftap%2Fbb-orange)](https://github.com/tyrantkhan/homebrew-tap)
 
 A fast, interactive command-line interface for Bitbucket Cloud. Manage repositories, pull requests, and pipelines without leaving your terminal.
