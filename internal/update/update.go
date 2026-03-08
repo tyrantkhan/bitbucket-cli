@@ -69,8 +69,10 @@ func CheckForUpdate(currentVersion string) (string, error) {
 	if data, err := json.Marshal(s); err == nil {
 		if err := config.EnsureConfigDir(); err != nil {
 			fmt.Fprintf(os.Stderr, "warning: could not create config directory for update cache: %v\n", err)
-		} else if err := os.WriteFile(stateFile, data, 0600); err != nil {
-			fmt.Fprintf(os.Stderr, "warning: could not write update cache file: %v\n", err)
+		} else {
+			if err := os.WriteFile(stateFile, data, 0600); err != nil {
+				fmt.Fprintf(os.Stderr, "warning: could not write update cache file: %v\n", err)
+			}
 		}
 	}
 
@@ -130,7 +132,8 @@ func isNewer(latest, current string) bool {
 			return false
 		}
 	}
-	return false
+	// If major.minor.patch are same, a stable release is newer than a pre-release.
+	return strings.Contains(current, "-") && !strings.Contains(latest, "-")
 }
 
 func parseSemver(v string) []int {
