@@ -16,9 +16,13 @@ func newCmdList() *cli.Command {
 		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
-			fmt.Fprintf(f.IOOut, "default_workspace=%s\n", f.Config.DefaultWorkspace)
-			fmt.Fprintf(f.IOOut, "default_format=%s\n", f.Config.DefaultFormat)
-			fmt.Fprintf(f.IOOut, "editor=%s\n", f.Config.Editor)
+			for _, key := range validKeys {
+				val, err := getConfigValue(f.Config, key)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintf(f.IOOut, "%s=%s\n", key, val)
+			}
 
 			return nil
 		}),

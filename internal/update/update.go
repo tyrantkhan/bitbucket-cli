@@ -67,8 +67,11 @@ func CheckForUpdate(currentVersion string) (string, error) {
 		LatestVersion: latest,
 	}
 	if data, err := json.Marshal(s); err == nil {
-		_ = config.EnsureConfigDir()
-		_ = os.WriteFile(stateFile, data, 0600)
+		if err := config.EnsureConfigDir(); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: could not create config directory for update cache: %v\n", err)
+		} else if err := os.WriteFile(stateFile, data, 0600); err != nil {
+			fmt.Fprintf(os.Stderr, "warning: could not write update cache file: %v\n", err)
+		}
 	}
 
 	if isNewer(latest, currentVersion) {
