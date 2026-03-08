@@ -27,7 +27,7 @@ func RenderTable(headers []string, rows [][]string) {
 		}
 	}
 
-	headerStyle := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#0052CC"))
+	headerStyle := lipgloss.NewStyle().Bold(true).Foreground(BitbucketBlue)
 	cellStyle := lipgloss.NewStyle()
 
 	// Render header

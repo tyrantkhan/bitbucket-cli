@@ -5,8 +5,10 @@ import (
 )
 
 var (
+	// BitbucketBlue is the standard Bitbucket brand color.
+	BitbucketBlue = lipgloss.Color("#0052CC")
 	// Bitbucket blue
-	Blue = lipgloss.NewStyle().Foreground(lipgloss.Color("#0052CC"))
+	Blue = lipgloss.NewStyle().Foreground(BitbucketBlue)
 	// Status colors
 	Green   = lipgloss.NewStyle().Foreground(lipgloss.Color("#36B37E"))
 	Red     = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF5630"))
@@ -14,7 +16,7 @@ var (
 	Cyan    = lipgloss.NewStyle().Foreground(lipgloss.Color("#00B8D9"))
 	Muted   = lipgloss.NewStyle().Foreground(lipgloss.Color("#97A0AF"))
 	Bold    = lipgloss.NewStyle().Bold(true)
-	Header  = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#0052CC"))
+	Header  = lipgloss.NewStyle().Bold(true).Foreground(BitbucketBlue)
 	Success = Green
 	Error   = Red
 	Warning = Yellow
