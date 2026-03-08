@@ -23,12 +23,7 @@ func NoArgs(action cli.ActionFunc) cli.ActionFunc {
 func CommandNotFound(_ context.Context, cmd *cli.Command, command string) {
 	fmt.Fprintf(os.Stderr, "unknown command %q for %q\n", command, cmd.FullName())
 
-	var visible []*cli.Command
-	for _, c := range cmd.Commands {
-		if !c.Hidden {
-			visible = append(visible, c)
-		}
-	}
+	visible := cmd.VisibleCommands()
 
 	if suggestion := cli.SuggestCommand(visible, command); suggestion != "" {
 		fmt.Fprintf(os.Stderr, "\nDid you mean this?\n\t%s\n", suggestion)
