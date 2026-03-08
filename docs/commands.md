@@ -340,6 +340,59 @@ bb pipeline logs {uuid} --follow    # live tail
 
 ---
 
+## Config
+
+### `bb config get <key>`
+
+Print the value of a configuration key.
+
+```sh
+bb config get default_workspace
+bb config get default_format
+bb config get editor
+```
+
+Valid keys: `default_workspace`, `default_format`, `editor`.
+
+### `bb config set <key> <value>`
+
+Update a configuration value. Silent on success.
+
+```sh
+bb config set default_workspace myworkspace
+bb config set default_format json
+bb config set editor vim
+```
+
+The `default_format` key only accepts `table` or `json`.
+
+### `bb config list`
+
+Print all configuration keys and their current values.
+
+```sh
+bb config list
+bb config ls
+```
+
+### `bb config clear-cache`
+
+Delete the local cache used for update checks (`state.json`).
+
+```sh
+bb config clear-cache
+```
+
+---
+
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `BB_NO_UPDATE_NOTIFIER` | Set to `1` to disable the automatic update notification |
+
+---
+
 ## Shell Completions
 
 ### `bb completion <shell>`

@@ -8,11 +8,13 @@ import (
 	"strings"
 
 	authCmd "github.com/tyrantkhan/bb/cmd/auth"
+	configCmd "github.com/tyrantkhan/bb/cmd/config"
 	pipelineCmd "github.com/tyrantkhan/bb/cmd/pipeline"
 	prCmd "github.com/tyrantkhan/bb/cmd/pr"
 	repoCmd "github.com/tyrantkhan/bb/cmd/repo"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
 	"github.com/tyrantkhan/bb/internal/output"
+	"github.com/tyrantkhan/bb/internal/update"
 	"github.com/urfave/cli/v3"
 )
 
@@ -80,8 +82,32 @@ func NewRootCommand() *cli.Command {
 			}
 			return cmdutil.WithFactory(ctx, f), nil
 		},
+		After: func(ctx context.Context, cmd *cli.Command) error {
+			if Version == "dev" || strings.HasSuffix(Version, "-dev") {
+				return nil
+			}
+			if os.Getenv("BB_NO_UPDATE_NOTIFIER") == "1" {
+				return nil
+			}
+			latest, err := update.CheckForUpdate(Version)
+			if err != nil {
+				return nil //nolint:nilerr // update check failures are non-fatal
+			}
+			if latest == "" {
+				return nil
+			}
+			fmt.Fprintf(os.Stderr, "\n%s %s → %s\n%s %s\n",
+				output.Yellow.Render("A new release of bb is available:"),
+				output.Cyan.Render(Version),
+				output.Cyan.Render(latest),
+				output.Yellow.Render("To upgrade:"),
+				output.Cyan.Render(update.UpgradeCommand()),
+			)
+			return nil
+		},
 		Commands: []*cli.Command{
 			authCmd.NewCmdAuth(),
+			configCmd.NewCmdConfig(),
 			repoCmd.NewCmdRepo(),
 			prCmd.NewCmdPR(),
 			pipelineCmd.NewCmdPipeline(),
