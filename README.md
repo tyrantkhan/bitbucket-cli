@@ -5,6 +5,7 @@
 [![Go](https://img.shields.io/github/go-mod/go-version/tyrantkhan/bitbucket-cli)](https://go.dev/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Homebrew](https://img.shields.io/badge/homebrew-tyrantkhan%2Ftap%2Fbb-orange)](https://github.com/tyrantkhan/homebrew-tap)
+[![Website](https://img.shields.io/badge/site-tyrantkhan.github.io%2Fbitbucket--cli-cyan)](https://tyrantkhan.github.io/bitbucket-cli/)
 
 A fast, interactive command-line interface for Bitbucket Cloud. Manage repositories, pull requests, and pipelines without leaving your terminal.
 
