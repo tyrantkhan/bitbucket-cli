@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"charm.land/huh/v2"
+	"charm.land/huh/v2/spinner"
 	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/auth"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
@@ -89,15 +90,27 @@ func newCmdLogin() *cli.Command {
 
 			// Validate credentials by fetching the authenticated user.
 			client := api.NewClient(creds)
-			resp, err := client.Get("/2.0/user")
-			if err != nil {
-				fmt.Fprintln(f.IOErr, output.Error.Render("Authentication failed: "+err.Error()))
+			var user models.User
+			var validationErr error
+
+			if err := spinner.New().
+				Title("Verifying credentials...").
+				Action(func() {
+					resp, reqErr := client.Get("/2.0/user")
+					if reqErr != nil {
+						validationErr = reqErr
+						return
+					}
+					if decErr := api.DecodeJSON(resp, &user); decErr != nil {
+						validationErr = fmt.Errorf("failed to decode user response: %w", decErr)
+					}
+				}).
+				Run(); err != nil {
 				return err
 			}
 
-			var user models.User
-			if err := api.DecodeJSON(resp, &user); err != nil {
-				return fmt.Errorf("failed to decode user response: %w", err)
+			if validationErr != nil {
+				return fmt.Errorf("authentication failed: %w", validationErr)
 			}
 
 			// For OAuth, set the username from the API response.
@@ -110,9 +123,20 @@ func newCmdLogin() *cli.Command {
 			))
 
 			// Fetch workspaces so the user can select a default.
-			workspaces, err := api.Paginate[models.Workspace](client, "/2.0/workspaces", 100)
-			if err != nil {
-				fmt.Fprintln(f.IOErr, output.Warning.Render("Could not fetch workspaces: "+err.Error()))
+			var workspaces []models.Workspace
+			var fetchErr error
+
+			if err := spinner.New().
+				Title("Fetching workspaces...").
+				Action(func() {
+					workspaces, fetchErr = api.Paginate[models.Workspace](client, "/2.0/workspaces", 100)
+				}).
+				Run(); err != nil {
+				return err
+			}
+
+			if fetchErr != nil {
+				fmt.Fprintln(f.IOErr, output.Warning.Render("Could not fetch workspaces: "+fetchErr.Error()))
 			}
 
 			var defaultWorkspace string
@@ -220,10 +244,20 @@ func loginOAuth(f *cmdutil.Factory, cmd *cli.Command) (*auth.Credentials, error)
 	}
 
 	// Exchange code for tokens.
-	fmt.Fprintln(f.IOOut, output.Muted.Render("Exchanging authorization code for tokens..."))
-	tokenResp, err := auth.ExchangeCode(clientID, clientSecret, code, port)
-	if err != nil {
+	var tokenResp *auth.TokenResponse
+	var exchangeErr error
+
+	if err := spinner.New().
+		Title("Exchanging authorization code for tokens...").
+		Action(func() {
+			tokenResp, exchangeErr = auth.ExchangeCode(clientID, clientSecret, code, port)
+		}).
+		Run(); err != nil {
 		return nil, err
+	}
+
+	if exchangeErr != nil {
+		return nil, exchangeErr
 	}
 
 	return &auth.Credentials{
@@ -242,15 +276,16 @@ func loginAPIToken(f *cmdutil.Factory, cmd *cli.Command) (*auth.Credentials, err
 
 	// Interactive mode: prompt for credentials if not provided via flags.
 	if email == "" || apiToken == "" {
-		fmt.Fprintln(f.IOOut, output.Muted.Render(
-			"Generate an API token at: https://id.atlassian.com/manage-profile/security/api-tokens\n"+
-				"Your token needs these Bitbucket scopes: Repositories (read/write), Pull Requests (read/write), Pipelines (read/write).\n"+
-				"bb has no backend, servers, or analytics — all requests go directly from your machine to the Bitbucket API.\n"+
-				"Your credentials are stored locally and never leave your device.",
-		))
-
 		err := huh.NewForm(
 			huh.NewGroup(
+				huh.NewNote().
+					Title("API Token Authentication").
+					Description(
+						"Generate a token at https://id.atlassian.com/manage-profile/security/api-tokens\n\n"+
+							"Required scopes: Repositories, Pull Requests, Pipelines (read/write)\n\n"+
+							"All requests go directly to the Bitbucket API.\n"+
+							"Your credentials are stored locally and never leave your device.",
+					),
 				huh.NewInput().
 					Title("Email").
 					Description("Your Atlassian account email").

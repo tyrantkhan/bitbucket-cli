@@ -300,3 +300,34 @@ bb pipeline logs {uuid} --follow    # live tail
 |---|---|
 | `--step` | Step UUID (interactive picker if omitted) |
 | `--follow` | Follow live log output |
+
+---
+
+## Shell Completions
+
+### `bb completion <shell>`
+
+Output shell completion script for the specified shell.
+
+```sh
+bb completion bash
+bb completion zsh
+bb completion fish
+bb completion pwsh
+```
+
+**Setup:**
+
+```sh
+# Bash — add to ~/.bashrc
+source <(bb completion bash)
+
+# Zsh — add to ~/.zshrc
+source <(bb completion zsh)
+
+# Fish
+bb completion fish > ~/.config/fish/completions/bb.fish
+
+# PowerShell — output and source the script
+bb completion pwsh > bb.ps1
+```
