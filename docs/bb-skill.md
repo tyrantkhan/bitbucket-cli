@@ -109,7 +109,7 @@ bb completion pwsh   # output PowerShell completion script
 
 ## Tips
 
+- **Always use `--format json`** when reading bb output — the default table format is designed for humans, not machines. JSON output is structured and reliable to parse.
 - Source branch defaults to current git branch when creating PRs
 - Pipeline `run` defaults to current branch
-- Use `--format json` when you need to parse output programmatically
 - User must run `bb auth login` before first use
