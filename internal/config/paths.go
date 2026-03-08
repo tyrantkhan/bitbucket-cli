@@ -27,6 +27,11 @@ func CredentialsFilePath() string {
 	return filepath.Join(ConfigDir(), "credentials.json")
 }
 
+// StateFilePath returns the full path to the state file.
+func StateFilePath() string {
+	return filepath.Join(ConfigDir(), "state.json")
+}
+
 // EnsureConfigDir creates the config directory if it doesn't exist.
 func EnsureConfigDir() error {
 	return os.MkdirAll(ConfigDir(), 0700)
