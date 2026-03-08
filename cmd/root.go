@@ -58,7 +58,7 @@ func versionString() string {
 		s += fmt.Sprintf(" (%s)", BuildDate)
 	}
 	if Version != "dev" && !strings.HasSuffix(Version, "-dev") && strings.Contains(Version, ".") {
-		s += fmt.Sprintf("\nhttps://github.com/tyrantkhan/bb/releases/tag/v%s", Version)
+		s += fmt.Sprintf("\nhttps://github.com/tyrantkhan/bitbucket-cli/releases/tag/v%s", Version)
 	}
 	return s
 }
