@@ -286,6 +286,21 @@ Stop a running pipeline. Prompts for confirmation.
 bb pipeline stop {uuid}
 ```
 
+### `bb pipeline logs <uuid>`
+
+View logs for a pipeline step. Interactive step picker if `--step` is not provided.
+
+```sh
+bb pipeline logs {uuid}
+bb pipeline logs {uuid} --step {step-uuid}
+bb pipeline logs {uuid} --follow    # live tail
+```
+
+| Flag | Description |
+|---|---|
+| `--step` | Step UUID (interactive picker if omitted) |
+| `--follow` | Follow live log output |
+
 ---
 
 ## Shell Completions
@@ -316,22 +331,3 @@ bb completion fish > ~/.config/fish/completions/bb.fish
 # PowerShell — output and source the script
 bb completion pwsh > bb.ps1
 ```
-
----
-
-## Pipelines
-
-### `bb pipeline logs <uuid>`
-
-View logs for a pipeline step. Interactive step picker if `--step` is not provided.
-
-```sh
-bb pipeline logs {uuid}
-bb pipeline logs {uuid} --step {step-uuid}
-bb pipeline logs {uuid} --follow    # live tail
-```
-
-| Flag | Description |
-|---|---|
-| `--step` | Step UUID (interactive picker if omitted) |
-| `--follow` | Follow live log output |

@@ -110,8 +110,7 @@ func newCmdLogin() *cli.Command {
 			}
 
 			if validationErr != nil {
-				fmt.Fprintln(f.IOErr, output.Error.Render("Authentication failed: "+validationErr.Error()))
-				return validationErr
+				return fmt.Errorf("authentication failed: %w", validationErr)
 			}
 
 			// For OAuth, set the username from the API response.
