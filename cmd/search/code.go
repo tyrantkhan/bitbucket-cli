@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"regexp"
 	"strings"
 
 	"github.com/tyrantkhan/bb/internal/api"
@@ -88,22 +89,22 @@ func newCmdCode() *cli.Command {
 
 // buildQuery constructs the search query from the positional arg and convenience flags.
 func buildQuery(cmd *cli.Command) string {
-	query := cmd.Args().First()
+	parts := []string{cmd.Args().First()}
 
 	if v := cmd.String("repo"); v != "" {
-		query += " repo:" + v
+		parts = append(parts, "repo:"+v)
 	}
 	if v := cmd.String("extension"); v != "" {
-		query += " ext:" + v
+		parts = append(parts, "ext:"+v)
 	}
 	if v := cmd.String("language"); v != "" {
-		query += " lang:" + v
+		parts = append(parts, "lang:"+v)
 	}
 	if v := cmd.String("path"); v != "" {
-		query += " path:" + v
+		parts = append(parts, "path:"+v)
 	}
 
-	return query
+	return strings.Join(parts, " ")
 }
 
 // renderCodeResults prints code search results in a human-friendly format.
@@ -117,9 +118,9 @@ func renderCodeResults(results []models.SearchCodeResult) {
 
 	for _, r := range results {
 		repoSlug := extractRepoSlug(r.File)
-		filePath := r.File.Path
+		filePath := sanitize(r.File.Path)
 		if repoSlug != "" {
-			filePath = repoSlug + "/" + filePath
+			filePath = sanitize(repoSlug) + "/" + filePath
 		}
 
 		fmt.Println()
@@ -130,10 +131,11 @@ func renderCodeResults(results []models.SearchCodeResult) {
 				lineNum := output.Muted.Render(fmt.Sprintf("%4d: ", line.Line))
 				var text strings.Builder
 				for _, seg := range line.Segments {
+					clean := sanitize(seg.Text)
 					if seg.Match {
-						text.WriteString(output.Bold.Render(seg.Text))
+						text.WriteString(output.Bold.Render(clean))
 					} else {
-						text.WriteString(seg.Text)
+						text.WriteString(clean)
 					}
 				}
 				fmt.Printf("  %s%s\n", lineNum, text.String())
@@ -155,6 +157,13 @@ func extractRepoSlug(f models.SearchFile) string {
 		}
 	}
 	return ""
+}
+
+var ansiEscapeRe = regexp.MustCompile(`\x1b\[[0-9;]*[a-zA-Z]`)
+
+// sanitize strips ANSI escape sequences from untrusted text to prevent terminal injection.
+func sanitize(s string) string {
+	return ansiEscapeRe.ReplaceAllString(s, "")
 }
 
 func plural(n int) string {
