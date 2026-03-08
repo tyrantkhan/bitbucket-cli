@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.7](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.6...v0.0.7) (2026-03-08)
+
+
+### Features
+
+* **config:** [#18](https://github.com/tyrantkhan/bitbucket-cli/issues/18) add config command group and update notifier ([#22](https://github.com/tyrantkhan/bitbucket-cli/issues/22)) ([9b85e0a](https://github.com/tyrantkhan/bitbucket-cli/commit/9b85e0aeae72ba851b091fa91cdb63154b89a508))
+
+## [0.0.6](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.5...v0.0.6) (2026-03-08)
+
+
+### Bug Fixes
+
+* [#19](https://github.com/tyrantkhan/bitbucket-cli/issues/19) improve unknown command error handling ([#20](https://github.com/tyrantkhan/bitbucket-cli/issues/20)) ([4ec9f9b](https://github.com/tyrantkhan/bitbucket-cli/commit/4ec9f9b53589cedb0ccf0acc04205ecbaec3d3af))
+
 ## [0.0.5](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.4...v0.0.5) (2026-03-08)
 
 

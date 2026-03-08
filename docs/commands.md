@@ -426,7 +426,6 @@ The client credentials are stored alongside your tokens so token refresh works a
 - To switch back to the built-in consumer, run `bb auth logout` first.
 
 ---
-
 ## Environment Variables
 
 | Variable | Description |
