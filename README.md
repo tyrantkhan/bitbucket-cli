@@ -145,6 +145,12 @@ Run `bb help oauth` for full details.
 | `bb pipeline stop <uuid>` | Stop a running pipeline |
 | `bb pipeline logs <uuid>` | View step logs (with `--follow`) |
 
+### Search
+
+| Command | Description |
+|---|---|
+| `bb search code <query>` | Search for code across repositories |
+
 ## Smart defaults
 
 bb detects context from your git repository:
