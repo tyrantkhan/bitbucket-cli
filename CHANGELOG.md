@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.4...v0.0.5) (2026-03-08)
+
+
+### Features
+
+* **pr:** [#14](https://github.com/tyrantkhan/bitbucket-cli/issues/14) add ready, draft, and edit commands ([#15](https://github.com/tyrantkhan/bitbucket-cli/issues/15)) ([31926ae](https://github.com/tyrantkhan/bitbucket-cli/commit/31926ae3d665e7d8af8ad4941f3675fb9116a380))
+
 ## [0.0.4](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.3...v0.0.4) (2026-03-08)
 
 
