@@ -385,6 +385,47 @@ bb config clear-cache
 
 ---
 
+## Custom OAuth Consumer
+
+By default, `bb auth login --web` uses a built-in OAuth consumer. You can use your own instead.
+
+### 1. Create a consumer
+
+Go to **Workspace settings → OAuth consumers → Add consumer** ([direct link](https://bitbucket.org/{workspace}/workspace/settings/api)) and configure:
+
+| Field | Value |
+|---|---|
+| Name | anything (e.g. `bb CLI`) |
+| Callback URL | `http://localhost/callback` |
+| Permissions | Account (Read), Repositories (Read/Write), Pull Requests (Read/Write), Pipelines (Read/Write) |
+
+Save and note the **Key** (client ID) and **Secret**.
+
+### 2. Configure bb
+
+**Environment variables (recommended):**
+
+```sh
+export BB_CLIENT_ID="your-key"
+export BB_CLIENT_SECRET="your-secret"
+bb auth login --web
+```
+
+**Or command-line flags:**
+
+```sh
+bb auth login --web --client-id "your-key" --client-secret "your-secret"
+```
+
+The client credentials are stored alongside your tokens so token refresh works automatically.
+
+### Notes
+
+- The callback URL must start with `http://localhost`. bb uses a local server on a random port.
+- OAuth consumers are workspace-scoped. To work across workspaces, create one in each — or use the built-in consumer.
+- To switch back to the built-in consumer, run `bb auth logout` first.
+
+---
 ## Environment Variables
 
 | Variable | Description |

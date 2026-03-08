@@ -64,6 +64,7 @@ bb pipeline stop {uuid}               # stop running pipeline
 | Command | Description |
 |---|---|
 | `bb auth login` | Authenticate with Bitbucket Cloud |
+| `bb auth login --web --client-id KEY --client-secret SECRET` | Authenticate with a custom OAuth consumer |
 | `bb auth logout` | Remove stored credentials |
 | `bb auth status` | Show authentication status |
 

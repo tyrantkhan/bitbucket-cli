@@ -86,6 +86,18 @@ bb auth login --api-token
 
 bb has no backend or servers. All requests go directly from your machine to the Bitbucket API. Your credentials are stored locally in `~/.config/bb/credentials.json` and never leave your device.
 
+### Custom OAuth consumer
+
+To use your own OAuth consumer instead of the built-in one, create one in **Workspace settings → OAuth consumers** with callback URL `http://localhost/callback` and the required permissions (Account Read, Repositories Read/Write, Pull Requests Read/Write, Pipelines Read/Write). Then:
+
+```sh
+export BB_CLIENT_ID="your-key"
+export BB_CLIENT_SECRET="your-secret"
+bb auth login --web
+```
+
+Run `bb help oauth` for full details.
+
 ## Commands
 
 ### Auth

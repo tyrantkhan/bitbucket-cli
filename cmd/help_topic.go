@@ -50,6 +50,56 @@ The default format can be changed in ~/.config/bb/config.yml:
   format: json`,
 	},
 	{
+		name:  "oauth",
+		short: "Using a custom OAuth consumer",
+		long: `By default, bb authenticates using a built-in OAuth consumer. If you
+prefer to use your own (for security, compliance, or organizational
+reasons), you can create a custom OAuth consumer in Bitbucket and
+configure bb to use it.
+
+CREATING AN OAUTH CONSUMER
+
+  1. Go to your Bitbucket workspace settings:
+     https://bitbucket.org/<workspace>/workspace/settings/api
+
+  2. Click "Add consumer".
+
+  3. Fill in:
+     - Name:         anything (e.g. "bb CLI")
+     - Callback URL: http://localhost/callback
+     - Permissions:  Account (Read), Repositories (Read/Write),
+                     Pull Requests (Read/Write), Pipelines (Read/Write)
+
+  4. Save and note the Key (client ID) and Secret (client secret).
+
+CONFIGURING BB
+
+  Option 1 — environment variables (recommended):
+
+    export BB_CLIENT_ID="your-key"
+    export BB_CLIENT_SECRET="your-secret"
+    bb auth login --web
+
+  Option 2 — command-line flags:
+
+    bb auth login --web --client-id "your-key" --client-secret "your-secret"
+
+  The client ID and secret are stored alongside your tokens in
+  ~/.config/bb/credentials.json so that token refresh works automatically.
+
+NOTES
+
+  - The callback URL in your consumer must start with http://localhost.
+    bb starts a local server on a random port to receive the OAuth code.
+
+  - OAuth consumers are scoped to a workspace. If you work across multiple
+    workspaces, the consumer must be created in each one — or use the
+    built-in consumer which works globally.
+
+  - If you switch from a custom consumer back to the built-in one, run
+    bb auth logout first to clear the stored client credentials.`,
+	},
+	{
 		name:  "exit-codes",
 		short: "Exit codes used by bb",
 		long: `bb uses the following exit codes:
