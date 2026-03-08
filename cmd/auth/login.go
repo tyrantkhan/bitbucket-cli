@@ -60,7 +60,7 @@ func newCmdLogin() *cli.Command {
 				box := lipgloss.NewStyle().
 					Width(50).
 					BorderStyle(lipgloss.RoundedBorder()).
-					BorderForeground(lipgloss.Color("#0052CC")).
+					BorderForeground(output.BitbucketBlue).
 					Padding(1, 2).
 					Render("bb has no backend or servers — all requests go directly to the Bitbucket API and your credentials never leave your device.")
 				fmt.Fprintln(f.IOOut, box)
