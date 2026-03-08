@@ -12,6 +12,14 @@ A fast, interactive command-line interface for Bitbucket Cloud. Manage repositor
 
 ## Install
 
+> **macOS note:** Binary signing is in progress. For now, installs via Homebrew, mise, or binary download will require you to remove the quarantine attribute:
+>
+> ```sh
+> xattr -d com.apple.quarantine "$(which bb)"
+> ```
+>
+> The `curl | sh` and `go install` methods are not affected.
+
 ### Homebrew
 
 ```sh
@@ -39,12 +47,6 @@ go install github.com/tyrantkhan/bb@latest
 ### Binary releases
 
 Download from [GitHub Releases](https://github.com/tyrantkhan/bitbucket-cli/releases).
-
-> **macOS note:** Pre-built binaries are not yet code-signed. On macOS you will need to remove the quarantine attribute after downloading:
->
-> ```sh
-> xattr -d com.apple.quarantine /path/to/bb
-> ```
 
 ## Quick start
 
