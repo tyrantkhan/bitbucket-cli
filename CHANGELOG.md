@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.0.10](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.9...v0.0.10) (2026-03-09)
+
+
+### Features
+
+* [#34](https://github.com/tyrantkhan/bitbucket-cli/issues/34) add repo URL to version output ([#35](https://github.com/tyrantkhan/bitbucket-cli/issues/35)) ([a0f187a](https://github.com/tyrantkhan/bitbucket-cli/commit/a0f187a39f392b7eb17faa990410a4be1c133948))
+* [#37](https://github.com/tyrantkhan/bitbucket-cli/issues/37) add comment to update check ([59b2219](https://github.com/tyrantkhan/bitbucket-cli/commit/59b2219117699ac22524ac95b884211b3f0e70dd))
+* [#37](https://github.com/tyrantkhan/bitbucket-cli/issues/37) test release-please without bullet prefix ([#38](https://github.com/tyrantkhan/bitbucket-cli/issues/38)) ([59b2219](https://github.com/tyrantkhan/bitbucket-cli/commit/59b2219117699ac22524ac95b884211b3f0e70dd))
+* [#40](https://github.com/tyrantkhan/bitbucket-cli/issues/40) add --format json support to all output-producing commands ([#44](https://github.com/tyrantkhan/bitbucket-cli/issues/44)) ([5f8c4eb](https://github.com/tyrantkhan/bitbucket-cli/commit/5f8c4eb96463299143644604b487869c1a61eca8))
+* **pr:** [#39](https://github.com/tyrantkhan/bitbucket-cli/issues/39) add --parent flag to pr comment for threaded replies ([38bcbf4](https://github.com/tyrantkhan/bitbucket-cli/commit/38bcbf4824e345e3533217aff9851a890bd9132b))
+* **pr:** [#39](https://github.com/tyrantkhan/bitbucket-cli/issues/39) add --parent flag to pr comment for threaded replies ([#42](https://github.com/tyrantkhan/bitbucket-cli/issues/42)) ([38bcbf4](https://github.com/tyrantkhan/bitbucket-cli/commit/38bcbf4824e345e3533217aff9851a890bd9132b))
+
+
+### Bug Fixes
+
+* [#37](https://github.com/tyrantkhan/bitbucket-cli/issues/37) add inline comment to repo URL ([59b2219](https://github.com/tyrantkhan/bitbucket-cli/commit/59b2219117699ac22524ac95b884211b3f0e70dd))
+* Do not cast int64 to int ([38bcbf4](https://github.com/tyrantkhan/bitbucket-cli/commit/38bcbf4824e345e3533217aff9851a890bd9132b))
+
 ## [0.0.9](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.8...v0.0.9) (2026-03-08)
 
 
