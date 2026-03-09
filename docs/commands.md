@@ -200,6 +200,7 @@ Add a comment to a pull request. Supports inline comments on specific files and 
 ```sh
 bb pr comment 42 --body "Looks good!"
 bb pr comment 42 --body "Fix this" --file src/main.go --line 15
+bb pr comment 42 --body "Good point" --parent 764369882
 ```
 
 | Flag | Description |
@@ -207,6 +208,7 @@ bb pr comment 42 --body "Fix this" --file src/main.go --line 15
 | `--body` | Comment text (required) |
 | `--file` | File path for inline comment |
 | `--line` | Line number for inline comment |
+| `--parent` | Parent comment ID for threaded replies |
 
 ### `bb pr diff <id>`
 

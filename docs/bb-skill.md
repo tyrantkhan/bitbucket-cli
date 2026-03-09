@@ -21,6 +21,7 @@ bb pr diff 42                         # view diff
 bb pr approve 42                      # approve
 bb pr comment 42 --body "LGTM"        # add comment
 bb pr comment 42 --body "Fix this" --file src/handler.go --line 55  # inline comment
+bb pr comment 42 --body "Good point" --parent 764369882            # threaded reply
 bb pr merge 42 --strategy squash      # merge
 bb pr ready 42                        # mark draft as ready
 bb pr draft 42                        # convert to draft
@@ -97,7 +98,7 @@ bb pipeline stop {uuid}               # stop running pipeline
 | `bb pr merge <id>` | Merge a PR (`--strategy merge_commit\|squash\|fast_forward`) |
 | `bb pr approve <id>` | Approve a pull request |
 | `bb pr decline <id>` | Decline a pull request |
-| `bb pr comment <id>` | Add a comment (`--body`, `--file`, `--line` for inline) |
+| `bb pr comment <id>` | Add a comment (`--body`, `--file`, `--line` for inline, `--parent` for threaded replies) |
 | `bb pr diff <id>` | Show diff (`--stat` for summary) |
 | `bb pr activity <id>` | Show activity feed |
 | `bb pr ready <id>` | Mark draft PR as ready for review |
