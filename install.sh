@@ -66,6 +66,9 @@ case ":${PATH}:" in
         if [ "$SHELL_NAME" = "fish" ]; then
             echo "Run this to add it:"
             echo "  fish_add_path ${INSTALL_DIR}"
+        elif [ "$RC_FILE" = "your shell's config file" ]; then
+            echo "Add this to your shell's config file (e.g. ~/.profile):"
+            echo "  export PATH=\"${INSTALL_DIR}:\$PATH\""
         else
             echo "Run this to add it:"
             echo "  echo 'export PATH=\"${INSTALL_DIR}:\$PATH\"' >> ${RC_FILE}"
