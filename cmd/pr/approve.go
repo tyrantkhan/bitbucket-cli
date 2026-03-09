@@ -7,6 +7,7 @@ import (
 
 	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
+	"github.com/tyrantkhan/bb/internal/models"
 	"github.com/tyrantkhan/bb/internal/output"
 	"github.com/urfave/cli/v3"
 )
@@ -51,7 +52,7 @@ func newCmdApprove() *cli.Command {
 
 			format := cmdutil.GetFormat(ctx, cmd)
 			if format == "json" {
-				var result map[string]interface{}
+				var result models.Participant
 				if err := api.DecodeJSON(resp, &result); err != nil {
 					return fmt.Errorf("failed to decode approval response: %w", err)
 				}

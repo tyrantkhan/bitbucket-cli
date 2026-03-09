@@ -80,6 +80,7 @@ func newCmdActivity() *cli.Command {
 				for _, raw := range rawItems {
 					var item ActivityItem
 					if err := json.Unmarshal(raw, &item); err != nil {
+						fmt.Fprintf(f.IOErr, "warning: failed to unmarshal activity item: %v\n", err)
 						continue
 					}
 					items = append(items, item)
