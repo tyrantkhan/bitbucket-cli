@@ -21,6 +21,7 @@ func newCmdRun() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "branch",
 				Usage: "Branch to run pipeline on (default: current git branch)",
@@ -126,6 +127,11 @@ func newCmdRun() *cli.Command {
 			var p models.Pipeline
 			if err := api.DecodeJSON(resp, &p); err != nil {
 				return fmt.Errorf("failed to decode pipeline: %w", err)
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(p)
 			}
 
 			status := p.StatusText()

@@ -21,6 +21,7 @@ func newCmdDiff() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.BoolFlag{
 				Name:  "stat",
 				Usage: "Show only file-level summary",
@@ -61,6 +62,11 @@ func newCmdDiff() *cli.Command {
 			}
 
 			diffText := string(body)
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(parseDiffFiles(diffText))
+			}
 
 			if cmd.Bool("stat") {
 				printDiffStat(f, diffText)
@@ -152,4 +158,60 @@ func printDiffStat(f *cmdutil.Factory, diffText string) {
 		output.Green.Render(fmt.Sprintf("%d insertion(s)", totalAdd)),
 		output.Red.Render(fmt.Sprintf("%d deletion(s)", totalDel)),
 	)
+}
+
+type diffFile struct {
+	Path      string `json:"path"`
+	Additions int    `json:"additions"`
+	Deletions int    `json:"deletions"`
+	Patch     string `json:"patch"`
+}
+
+func parseDiffFiles(diffText string) []diffFile {
+	var files []diffFile
+	var current *diffFile
+	var patchLines []string
+
+	flushPatch := func() {
+		if current != nil && len(patchLines) > 0 {
+			current.Patch = strings.Join(patchLines, "\n")
+			patchLines = nil
+		}
+	}
+
+	scanner := bufio.NewScanner(strings.NewReader(diffText))
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if strings.HasPrefix(line, "diff --git") {
+			flushPatch()
+			parts := strings.Fields(line)
+			name := ""
+			if len(parts) >= 4 {
+				name = strings.TrimPrefix(parts[3], "b/")
+			}
+			files = append(files, diffFile{Path: name})
+			current = &files[len(files)-1]
+			patchLines = append(patchLines, line)
+			continue
+		}
+
+		if current == nil {
+			continue
+		}
+
+		patchLines = append(patchLines, line)
+
+		if strings.HasPrefix(line, "+") && !strings.HasPrefix(line, "+++") {
+			current.Additions++
+		} else if strings.HasPrefix(line, "-") && !strings.HasPrefix(line, "---") {
+			current.Deletions++
+		}
+	}
+	flushPatch()
+
+	if len(files) == 0 {
+		return []diffFile{}
+	}
+	return files
 }

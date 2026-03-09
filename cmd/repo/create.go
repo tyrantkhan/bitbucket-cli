@@ -18,6 +18,7 @@ func newCmdCreate() *cli.Command {
 		Usage: "Create a new repository",
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "name",
 				Usage: "Repository name",
@@ -111,6 +112,11 @@ func newCmdCreate() *cli.Command {
 			var repo models.Repository
 			if err := api.DecodeJSON(resp, &repo); err != nil {
 				return fmt.Errorf("failed to decode created repository: %w", err)
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(repo)
 			}
 
 			// Show success message and repository details.

@@ -64,7 +64,7 @@ bb pipeline stop {uuid}               # stop running pipeline
 |---|---|---|
 | `--workspace` | `-w` | Bitbucket workspace slug |
 | `--repo` | `-r` | Repository slug |
-| `--format` | | Output format: `table` (default), `json` |
+| `--format` | | Output format: `table` (default), `json` (supported on most commands) |
 | `--limit` | | Maximum number of results (default: 30) |
 | `--web` | | Open resource in browser |
 

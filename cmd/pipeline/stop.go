@@ -18,6 +18,7 @@ func newCmdStop() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
@@ -58,6 +59,14 @@ func newCmdStop() *cli.Command {
 			_, err = client.Post(path, nil)
 			if err != nil {
 				return err
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(map[string]string{
+					"uuid":   pipelineUUID,
+					"status": "stopped",
+				})
 			}
 
 			fmt.Fprintln(f.IOOut, output.Success.Render("Pipeline stopped successfully."))
