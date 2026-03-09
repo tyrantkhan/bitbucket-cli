@@ -88,7 +88,7 @@ func addComment(f *cmdutil.Factory, client *api.Client, workspace, repo string, 
 		body["inline"] = inline
 	}
 
-	if parentID := int(cmd.Int("parent")); parentID > 0 {
+	if parentID := cmd.Int("parent"); parentID > 0 {
 		body["parent"] = map[string]interface{}{
 			"id": parentID,
 		}
