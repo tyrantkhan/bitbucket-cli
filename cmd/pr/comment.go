@@ -32,6 +32,10 @@ func newCmdComment() *cli.Command {
 				Name:  "line",
 				Usage: "Line number for inline comment (used with --body and --file)",
 			},
+			&cli.IntFlag{
+				Name:  "parent",
+				Usage: "Parent comment ID for threaded replies",
+			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
@@ -82,6 +86,12 @@ func addComment(f *cmdutil.Factory, client *api.Client, workspace, repo string, 
 			inline["to"] = line
 		}
 		body["inline"] = inline
+	}
+
+	if parentID := int(cmd.Int("parent")); parentID > 0 {
+		body["parent"] = map[string]interface{}{
+			"id": parentID,
+		}
 	}
 
 	path := fmt.Sprintf("/2.0/repositories/%s/%s/pullrequests/%d/comments", workspace, repo, prID)
