@@ -20,6 +20,7 @@ func newCmdComment() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "body",
 				Usage: "Comment text",
@@ -63,12 +64,25 @@ func newCmdComment() *cli.Command {
 				return fmt.Errorf("--body is required; use --body to provide comment text")
 			}
 
-			return addComment(f, client, workspace, repo, prID, cmd, message)
+			comment, err := addComment(client, workspace, repo, prID, cmd, message)
+			if err != nil {
+				return err
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(comment)
+			}
+
+			fmt.Fprintln(f.IOOut, output.Success.Render(
+				fmt.Sprintf("Comment #%d added to pull request #%d.", comment.ID, prID),
+			))
+			return nil
 		},
 	}
 }
 
-func addComment(f *cmdutil.Factory, client *api.Client, workspace, repo string, prID int, cmd *cli.Command, message string) error {
+func addComment(client *api.Client, workspace, repo string, prID int, cmd *cli.Command, message string) (*models.Comment, error) {
 	body := map[string]interface{}{
 		"content": map[string]string{
 			"raw": message,
@@ -98,17 +112,13 @@ func addComment(f *cmdutil.Factory, client *api.Client, workspace, repo string, 
 
 	resp, err := client.Post(path, body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var comment models.Comment
 	if err := api.DecodeJSON(resp, &comment); err != nil {
-		return fmt.Errorf("failed to decode comment: %w", err)
+		return nil, fmt.Errorf("failed to decode comment: %w", err)
 	}
 
-	fmt.Fprintln(f.IOOut, output.Success.Render(
-		fmt.Sprintf("Comment #%d added to pull request #%d.", comment.ID, prID),
-	))
-
-	return nil
+	return &comment, nil
 }

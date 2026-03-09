@@ -20,6 +20,7 @@ func newCmdCreate() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "title",
 				Usage: "Pull request title",
@@ -143,6 +144,11 @@ func newCmdCreate() *cli.Command {
 			var pr models.PullRequest
 			if err := api.DecodeJSON(resp, &pr); err != nil {
 				return fmt.Errorf("failed to decode pull request: %w", err)
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(pr)
 			}
 
 			fmt.Fprintln(f.IOOut, output.Success.Render(

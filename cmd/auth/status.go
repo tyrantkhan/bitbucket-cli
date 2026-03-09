@@ -16,6 +16,9 @@ func newCmdStatus() *cli.Command {
 	return &cli.Command{
 		Name:  "status",
 		Usage: "Show authentication status",
+		Flags: []cli.Flag{
+			cmdutil.FormatFlag,
+		},
 		Action: cmdutil.NoArgs(func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
 
@@ -39,6 +42,22 @@ func newCmdStatus() *cli.Command {
 
 			// Retrieve credentials to show masked app password.
 			creds, _ := f.AuthStore.GetCredentials()
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				result := map[string]interface{}{
+					"user":      user,
+					"workspace": f.Config.DefaultWorkspace,
+				}
+				if creds != nil {
+					if creds.IsOAuth() {
+						result["auth_method"] = "oauth"
+					} else {
+						result["auth_method"] = "api_token"
+					}
+				}
+				return output.RenderJSON(result)
+			}
 
 			fmt.Fprintln(f.IOOut, output.Bold.Render("Authentication Status"))
 			fmt.Fprintln(f.IOOut)

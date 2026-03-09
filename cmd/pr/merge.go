@@ -21,6 +21,7 @@ func newCmdMerge() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "strategy",
 				Usage: "Merge strategy: merge_commit, squash, fast_forward",
@@ -92,6 +93,11 @@ func newCmdMerge() *cli.Command {
 			var pr models.PullRequest
 			if err := api.DecodeJSON(resp, &pr); err != nil {
 				return fmt.Errorf("failed to decode merge response: %w", err)
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(pr)
 			}
 
 			fmt.Fprintln(f.IOOut, output.Success.Render(

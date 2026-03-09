@@ -17,6 +17,7 @@ func newCmdReady() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
@@ -40,7 +41,8 @@ func newCmdReady() *cli.Command {
 			}
 
 			path := fmt.Sprintf("/2.0/repositories/%s/%s/pullrequests/%d", workspace, repo, prID)
-			return setDraftStatus(client, f.IOOut, path, prID, false)
+			format := cmdutil.GetFormat(ctx, cmd)
+			return setDraftStatus(client, f.IOOut, path, prID, false, format)
 		},
 	}
 }

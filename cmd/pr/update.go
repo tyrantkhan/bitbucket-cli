@@ -42,7 +42,7 @@ func buildPRUpdateBody(pr models.PullRequest) map[string]interface{} {
 
 // setDraftStatus fetches the PR, checks its current draft state, and updates
 // it via PUT if needed. Used by both `bb pr ready` and `bb pr draft`.
-func setDraftStatus(client *api.Client, out io.Writer, path string, prID int, draft bool) error {
+func setDraftStatus(client *api.Client, out io.Writer, path string, prID int, draft bool, format string) error {
 	resp, err := client.Get(path)
 	if err != nil {
 		return err
@@ -54,6 +54,9 @@ func setDraftStatus(client *api.Client, out io.Writer, path string, prID int, dr
 	}
 
 	if pr.Draft == draft {
+		if format == "json" {
+			return output.RenderJSON(pr)
+		}
 		msg := fmt.Sprintf("Pull request #%d is already ready for review.", prID)
 		if draft {
 			msg = fmt.Sprintf("Pull request #%d is already a draft.", prID)
@@ -68,6 +71,14 @@ func setDraftStatus(client *api.Client, out io.Writer, path string, prID int, dr
 	resp, err = client.Put(path, body)
 	if err != nil {
 		return err
+	}
+
+	if format == "json" {
+		var updated models.PullRequest
+		if err := api.DecodeJSON(resp, &updated); err != nil {
+			return fmt.Errorf("failed to decode response: %w", err)
+		}
+		return output.RenderJSON(updated)
 	}
 	_ = resp.Body.Close()
 

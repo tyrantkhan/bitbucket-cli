@@ -6,7 +6,9 @@ import (
 	"strconv"
 
 	"charm.land/huh/v2"
+	"github.com/tyrantkhan/bb/internal/api"
 	"github.com/tyrantkhan/bb/internal/cmdutil"
+	"github.com/tyrantkhan/bb/internal/models"
 	"github.com/tyrantkhan/bb/internal/output"
 	"github.com/urfave/cli/v3"
 )
@@ -19,6 +21,7 @@ func newCmdDecline() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
@@ -64,6 +67,15 @@ func newCmdDecline() *cli.Command {
 			resp, err := client.Post(path, nil)
 			if err != nil {
 				return err
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				var result models.PullRequest
+				if err := api.DecodeJSON(resp, &result); err != nil {
+					return fmt.Errorf("failed to decode decline response: %w", err)
+				}
+				return output.RenderJSON(result)
 			}
 			_ = resp.Body.Close()
 

@@ -65,7 +65,7 @@ bb pipeline stop {uuid}               # stop running pipeline
 |---|---|---|
 | `--workspace` | `-w` | Bitbucket workspace slug |
 | `--repo` | `-r` | Repository slug |
-| `--format` | | Output format: `table` (default), `json` |
+| `--format` | | Output format: `table` (default), `json` (supported on most commands) |
 | `--limit` | | Maximum number of results (default: 30) |
 | `--web` | | Open resource in browser |
 
@@ -121,9 +121,82 @@ bb pipeline stop {uuid}               # stop running pipeline
 | `bb pipeline stop <uuid>` | Stop a running pipeline |
 | `bb pipeline logs <uuid>` | View step logs (`--step`, `--follow`) |
 
+## PR review workflow
+
+When the user asks you to review a PR, follow these steps:
+
+### Step 1: Identify the PR
+
+```sh
+# If you have a PR number:
+bb pr view 42 --format json
+
+# If you have a branch name, list open PRs and find it:
+bb pr list --format json
+```
+
+**Do NOT** use `bb pr list --source <branch>` — there is no `--source` filter flag.
+
+### Step 2: Read the diff
+
+**Use `bb pr diff` when reviewing PRs.** It shows exactly what Bitbucket sees — the diff between source and destination branches as the API returns it. Use `git diff` for local work: checking uncommitted changes, comparing arbitrary branches/commits, or exploring history. But for PR-specific review, `bb pr diff` is the right tool.
+
+```sh
+bb pr diff 42              # full colored diff (best for reading)
+bb pr diff 42 --stat       # file-level summary first
+bb pr diff 42 --format json  # structured JSON with per-file additions/deletions/patches
+```
+
+Use the plain `bb pr diff 42` output to read the diff (it's human-readable). Use `--format json` only if you need to programmatically parse file names or stats.
+
+### Step 3: Read existing comments
+
+```sh
+bb pr view 42 --comments --format json
+```
+
+Note the comment IDs — you'll need them if you want to reply to a thread.
+
+### Step 4: Read the changed files
+
+Use `Read` or `Grep` tools to read the full files for context beyond the diff. Don't rely only on the diff — understand the surrounding code.
+
+### Step 5: Post comments
+
+There are **three types of comments** — use the right one:
+
+**General comment** — for overall feedback, summaries, or approval/decline rationale:
+```sh
+bb pr comment 42 --body "Overall LGTM, a few minor suggestions below."
+```
+
+**Inline comment** — for feedback on a specific line in a specific file. Use `--file` and `--line` together. The `--line` value must be a line number visible in the diff (a new-side line number):
+```sh
+bb pr comment 42 --body "This could be null" --file src/handler.go --line 55
+```
+
+**Threaded reply** — to reply to an existing comment. Use `--parent` with the comment ID (from `bb pr view --comments --format json` or from a previous `bb pr comment` result):
+```sh
+bb pr comment 42 --body "Good point, fixed" --parent 764369882
+```
+
+**Decision guide:**
+- Giving overall feedback or a review summary? → **General comment**
+- Pointing out an issue on a specific line of code? → **Inline comment** (`--file` + `--line`)
+- Responding to someone else's comment or your own? → **Threaded reply** (`--parent`)
+- Posting multiple review points? → One **general comment** for the summary, then **inline comments** for each specific issue
+
+### Step 6: Approve, request changes, or leave as-is
+
+```sh
+bb pr approve 42           # approve the PR
+# No "request changes" action in Bitbucket API — just leave comments
+```
+
 ## Tips
 
-- **Always use `--format json`** when reading bb output — the default table format is designed for humans, not machines. JSON output is structured and reliable to parse.
+- **Use `--format json`** when you need to parse bb output programmatically. For reading diffs or viewing PR details, the default table/text format is fine.
 - Source branch defaults to current git branch when creating PRs
 - Pipeline `run` defaults to current branch
 - User must run `bb auth login` before first use
+- **Use `bb pr diff` for PR reviews**, `git diff` for local/branch comparisons

@@ -43,6 +43,7 @@ func newCmdActivity() *cli.Command {
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
 			cmdutil.LimitFlag,
+			cmdutil.FormatFlag,
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			f := cmdutil.GetFactory(ctx)
@@ -71,6 +72,20 @@ func newCmdActivity() *cli.Command {
 			rawItems, err := api.PaginateRaw(client, path, limit)
 			if err != nil {
 				return err
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				var items []ActivityItem
+				for _, raw := range rawItems {
+					var item ActivityItem
+					if err := json.Unmarshal(raw, &item); err != nil {
+						fmt.Fprintf(f.IOErr, "warning: failed to unmarshal activity item: %v\n", err)
+						continue
+					}
+					items = append(items, item)
+				}
+				return output.RenderJSON(items)
 			}
 
 			if len(rawItems) == 0 {

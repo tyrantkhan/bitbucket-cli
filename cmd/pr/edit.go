@@ -22,6 +22,7 @@ func newCmdEdit() *cli.Command {
 		Flags: []cli.Flag{
 			cmdutil.WorkspaceFlag,
 			cmdutil.RepoFlag,
+			cmdutil.FormatFlag,
 			&cli.StringFlag{
 				Name:  "title",
 				Usage: "New title",
@@ -150,6 +151,11 @@ func newCmdEdit() *cli.Command {
 			var updated models.PullRequest
 			if err := api.DecodeJSON(resp, &updated); err != nil {
 				return fmt.Errorf("failed to decode response: %w", err)
+			}
+
+			format := cmdutil.GetFormat(ctx, cmd)
+			if format == "json" {
+				return output.RenderJSON(updated)
 			}
 
 			fmt.Fprintln(f.IOOut, output.Success.Render(
