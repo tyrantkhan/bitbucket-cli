@@ -48,6 +48,29 @@ echo "Installed bb to ${INSTALL_DIR}/bb"
 
 # Check if INSTALL_DIR is in PATH
 case ":${PATH}:" in
-    *":${INSTALL_DIR}:"*) ;;
-    *) echo "Add ${INSTALL_DIR} to your PATH to use bb" ;;
+    *":${INSTALL_DIR}:"*)
+        echo "Run 'bb --help' to get started."
+        ;;
+    *)
+        echo ""
+        echo "WARNING: ${INSTALL_DIR} is not in your PATH."
+        echo "The 'bb' command won't be found until you add it."
+        echo ""
+        SHELL_NAME="$(basename "${SHELL:-sh}")"
+        case "$SHELL_NAME" in
+            zsh)  RC_FILE="~/.zshrc" ;;
+            bash) RC_FILE="~/.bashrc" ;;
+            fish) RC_FILE="~/.config/fish/config.fish" ;;
+            *)    RC_FILE="your shell's config file" ;;
+        esac
+        if [ "$SHELL_NAME" = "fish" ]; then
+            echo "Run this to add it:"
+            echo "  fish_add_path ${INSTALL_DIR}"
+        else
+            echo "Run this to add it:"
+            echo "  echo 'export PATH=\"${INSTALL_DIR}:\$PATH\"' >> ${RC_FILE}"
+        fi
+        echo ""
+        echo "Then restart your shell or run: exec \$SHELL"
+        ;;
 esac
