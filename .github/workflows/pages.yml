@@ -30,6 +30,12 @@ jobs:
       - name: Copy install script
         run: cp install.sh site/install.sh
 
+      - name: Package bb skill zip
+        run: |
+          mkdir -p site/bb
+          cp docs/bb-skill.md site/bb/SKILL.md
+          cd site && zip -r bb-skill.zip bb/ && rm -rf bb
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
