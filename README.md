@@ -39,6 +39,8 @@ mise use -g ubi:tyrantkhan/bitbucket-cli[exe=bb]
 curl -sSL https://tyrantkhan.github.io/bitbucket-cli/install.sh | sh
 ```
 
+Installs to `~/.local/bin`. The script will let you know if it's not in your PATH and show you how to add it.
+
 ### From source
 
 ```sh
