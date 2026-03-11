@@ -1,0 +1,38 @@
+name: Skill Version Check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-version:
+    name: Skill version bump
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check skill version was bumped
+        run: |
+          if ! git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -q '^docs/bb-skill.md$'; then
+            echo "Skill file not changed — skipping"
+            exit 0
+          fi
+
+          BASE_VERSION=$(git show origin/${{ github.base_ref }}:docs/bb-skill.md | grep -m1 '^version:' | awk '{print $2}')
+          PR_VERSION=$(grep -m1 '^version:' docs/bb-skill.md | awk '{print $2}')
+
+          if [ -z "$BASE_VERSION" ]; then
+            echo "No version found in base branch — skipping check"
+            exit 0
+          fi
+
+          if [ "$BASE_VERSION" = "$PR_VERSION" ]; then
+            echo "::error file=docs/bb-skill.md::Skill file changed but version was not bumped (still $BASE_VERSION). Please update the version field."
+            exit 1
+          fi
+
+          echo "Version bumped: $BASE_VERSION → $PR_VERSION"
