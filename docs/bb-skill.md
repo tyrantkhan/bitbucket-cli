@@ -33,6 +33,8 @@ bb pr edit 42 --title "New title"     # edit PR fields
 
 ```sh
 bb repo list                          # list repos in workspace
+bb repo list --project PROJ           # filter by project
+bb repo list --exclude-project PROJ   # exclude a project
 bb repo view myrepo                   # view details
 bb repo create --name myrepo --private
 bb repo clone myrepo --protocol ssh
