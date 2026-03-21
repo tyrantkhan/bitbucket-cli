@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.10...v0.0.11) (2026-03-21)
+
+
+### Features
+
+* **repo:** [#50](https://github.com/tyrantkhan/bitbucket-cli/issues/50) add project column and --project/--exclude-project filters to repo list ([#51](https://github.com/tyrantkhan/bitbucket-cli/issues/51)) ([c8cb514](https://github.com/tyrantkhan/bitbucket-cli/commit/c8cb5142578bc35615f7291b1b1f4e46c46e65fc))
+
 ## [0.0.10](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.9...v0.0.10) (2026-03-09)
 
 
