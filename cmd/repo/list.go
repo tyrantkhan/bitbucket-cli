@@ -51,10 +51,14 @@ func newCmdList() *cli.Command {
 			limit := int(cmd.Int("limit"))
 			path := fmt.Sprintf("/2.0/repositories/%s", workspace)
 
+			var q string
 			if project != "" {
-				path += fmt.Sprintf("?q=%s", url.QueryEscape(fmt.Sprintf(`project.key="%s"`, project)))
+				q = fmt.Sprintf(`project.key="%s"`, project)
 			} else if excludeProject != "" {
-				path += fmt.Sprintf("?q=%s", url.QueryEscape(fmt.Sprintf(`project.key!="%s"`, excludeProject)))
+				q = fmt.Sprintf(`project.key!="%s"`, excludeProject)
+			}
+			if q != "" {
+				path += "?q=" + url.QueryEscape(q)
 			}
 
 			repos, err := api.Paginate[models.Repository](client, path, limit)
