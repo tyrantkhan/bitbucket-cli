@@ -70,6 +70,7 @@ bb repo list
 bb repo list -w myworkspace --limit 50
 bb repo list --project PROJ
 bb repo list --exclude-project PROJ
+bb repo list --details
 bb repo list --format json
 ```
 
@@ -77,6 +78,7 @@ bb repo list --format json
 |---|---|
 | `--project`, `-p` | Filter by project key |
 | `--exclude-project` | Exclude repos in this project |
+| `--details` | Include last commit date and open PR count (slower) |
 
 ### `bb repo view [slug]`
 
@@ -104,6 +106,20 @@ bb repo create --name myrepo --private --project PROJ
 | `--private` | Make private (default: true) |
 | `--project` | Project key |
 
+### `bb repo move <slug>`
+
+Move a repository to a different project. Optionally add a prefix to the repo name.
+
+```sh
+bb repo move myrepo --project AR
+bb repo move myrepo --project AR --prefix "Archived-"
+```
+
+| Flag | Description |
+|---|---|
+| `--project` | Destination project key (required) |
+| `--prefix` | Prefix to add to the repo name |
+
 ### `bb repo clone <slug> [directory]`
 
 Clone a repository.
@@ -117,6 +133,20 @@ bb repo clone myrepo --protocol ssh
 | Flag | Description |
 |---|---|
 | `--protocol` | `https` (default) or `ssh` |
+
+---
+
+## Workspaces
+
+### `bb workspace members`
+
+List members of a workspace.
+
+```sh
+bb workspace members
+bb workspace members -w myworkspace --limit 50
+bb workspace members --format json
+```
 
 ---
 

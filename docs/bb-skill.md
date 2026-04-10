@@ -1,6 +1,6 @@
 ---
 name: bb
-version: 1.1.0
+version: 1.2.0
 description: Use the bb CLI to interact with Bitbucket Cloud — manage PRs, repos, and pipelines. Use when the user asks about Bitbucket pull requests, repositories, pipelines, or wants to perform Bitbucket operations.
 allowed-tools: Bash(bb *)
 ---
@@ -35,9 +35,12 @@ bb pr edit 42 --title "New title"     # edit PR fields
 bb repo list                          # list repos in workspace
 bb repo list --project PROJ           # filter by project
 bb repo list --exclude-project PROJ   # exclude a project
+bb repo list --details                # include last commit date and open PR count
 bb repo view myrepo                   # view details
 bb repo create --name myrepo --private
 bb repo clone myrepo --protocol ssh
+bb repo move myrepo --project AR      # move repo to a different project
+bb repo move myrepo --project AR --prefix "Archived-"  # move and add prefix
 ```
 
 ### Search
@@ -86,9 +89,11 @@ bb pipeline stop {uuid}               # stop running pipeline
 | Command | Description |
 |---|---|
 | `bb repo list` | List repositories in a workspace |
+| `bb repo list --details` | Include last commit date and open PR count (slower) |
 | `bb repo view [slug]` | View repository details |
 | `bb repo create` | Create a new repository |
 | `bb repo clone <slug>` | Clone a repository |
+| `bb repo move <slug> --project KEY` | Move a repo to a different project (`--prefix` to rename) |
 
 ### Pull Requests
 
@@ -113,6 +118,12 @@ bb pipeline stop {uuid}               # stop running pipeline
 | Command | Description |
 |---|---|
 | `bb search code <query>` | Search for code across repos (`--repo`, `--extension`, `--language`, `--path`) |
+
+### Workspaces
+
+| Command | Description |
+|---|---|
+| `bb workspace members` | List workspace members (`--workspace`, `--limit`, `--format`) |
 
 ### Pipelines
 

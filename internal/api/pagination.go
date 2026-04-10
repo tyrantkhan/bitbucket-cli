@@ -1,6 +1,9 @@
 package api
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 // Paginate fetches all pages of a paginated endpoint up to the given limit.
 // If limit <= 0, all pages are fetched.
@@ -41,4 +44,24 @@ func Paginate[T any](client *Client, path string, limit int) ([]T, error) {
 // PaginateRaw fetches all pages and returns raw JSON messages for custom decoding.
 func PaginateRaw(client *Client, path string, limit int) ([]json.RawMessage, error) {
 	return Paginate[json.RawMessage](client, path, limit)
+}
+
+// Count fetches just the total size from a paginated endpoint without retrieving all items.
+func Count(client *Client, path string) (int, error) {
+	// Request minimal page size since we only need the total count.
+	sep := "?"
+	if strings.Contains(path, "?") {
+		sep = "&"
+	}
+	resp, err := client.Get(path + sep + "pagelen=0") //nolint:bodyclose // closed by DecodeJSON
+	if err != nil {
+		return 0, err
+	}
+
+	var page PaginatedResponse[json.RawMessage]
+	if err := DecodeJSON(resp, &page); err != nil {
+		return 0, err
+	}
+
+	return page.Size, nil
 }
