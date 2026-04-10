@@ -16,6 +16,7 @@ func NewCmdRepo() *cli.Command {
 			newCmdView(),
 			newCmdClone(),
 			newCmdCreate(),
+			newCmdMove(),
 		},
 	}
 }
