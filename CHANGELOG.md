@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.12](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.11...v0.0.12) (2026-04-10)
+
+
+### Features
+
+* **repo:** [#54](https://github.com/tyrantkhan/bitbucket-cli/issues/54) add --details flag to repo list and repo move command ([#57](https://github.com/tyrantkhan/bitbucket-cli/issues/57)) ([c5c9090](https://github.com/tyrantkhan/bitbucket-cli/commit/c5c9090c0bf77796b0ad45162c94a3a0f68b793e))
+* **workspace:** [#53](https://github.com/tyrantkhan/bitbucket-cli/issues/53) add workspace members command ([#55](https://github.com/tyrantkhan/bitbucket-cli/issues/55)) ([6b076f0](https://github.com/tyrantkhan/bitbucket-cli/commit/6b076f0be2c4d20eaefca4825da948d93b01b50b))
+
 ## [0.0.11](https://github.com/tyrantkhan/bitbucket-cli/compare/v0.0.10...v0.0.11) (2026-03-21)
 
 
