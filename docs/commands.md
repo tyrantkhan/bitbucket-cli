@@ -68,8 +68,15 @@ List repositories in a workspace.
 ```sh
 bb repo list
 bb repo list -w myworkspace --limit 50
+bb repo list --project PROJ
+bb repo list --exclude-project PROJ
 bb repo list --format json
 ```
+
+| Flag | Description |
+|---|---|
+| `--project`, `-p` | Filter by project key |
+| `--exclude-project` | Exclude repos in this project |
 
 ### `bb repo view [slug]`
 

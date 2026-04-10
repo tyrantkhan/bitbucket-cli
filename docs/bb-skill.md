@@ -1,6 +1,6 @@
 ---
 name: bb
-version: 1.0.0
+version: 1.1.0
 description: Use the bb CLI to interact with Bitbucket Cloud — manage PRs, repos, and pipelines. Use when the user asks about Bitbucket pull requests, repositories, pipelines, or wants to perform Bitbucket operations.
 allowed-tools: Bash(bb *)
 ---
@@ -33,6 +33,8 @@ bb pr edit 42 --title "New title"     # edit PR fields
 
 ```sh
 bb repo list                          # list repos in workspace
+bb repo list --project PROJ           # filter by project
+bb repo list --exclude-project PROJ   # exclude a project
 bb repo view myrepo                   # view details
 bb repo create --name myrepo --private
 bb repo clone myrepo --protocol ssh
